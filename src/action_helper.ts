@@ -1,6 +1,6 @@
 import { ILogger } from './interfaces'
-import path from 'path'
-import core from '@actions/core'
+import * as path from 'path'
+import * as core from '@actions/core'
 
 export class ActionHelper {
   constructor (private readonly _logger: ILogger) {}

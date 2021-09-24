@@ -1,5 +1,5 @@
 import { IHttpClient, ILogger, ICache } from './interfaces'
-import os from 'os'
+import * as os from 'os'
 
 export class InsiderCiInstaller {
   private readonly _osPlatform: string

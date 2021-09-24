@@ -1,6 +1,6 @@
 import { GitHubRelease, ICache, Result } from './interfaces'
-import toolCache from '@actions/tool-cache'
-import path from 'path'
+import * as toolCache from '@actions/tool-cache'
+import * as path from 'path'
 
 export class Cache implements ICache {
   constructor (private readonly baseURL: string) {}

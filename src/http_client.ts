@@ -1,4 +1,4 @@
-import http from '@actions/http-client'
+import * as http from '@actions/http-client'
 import { IHttpClient, Result } from './interfaces'
 
 export class HttpClient implements IHttpClient {
