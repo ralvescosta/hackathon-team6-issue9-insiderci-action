@@ -6,6 +6,10 @@ export class Logger implements ILogger {
     core.info(message)
   }
 
+  public debug (message: string): void {
+    core.debug(message)
+  }
+
   public warn (message: string): void {
     core.warning(message)
   }
