@@ -19,9 +19,9 @@ jobs:
         os:
           - ubuntu-latest
     steps:
-      - name: Hello world action step
-        id: hello
-        uses: ralvescosta/insiderci-action@v0.0.8
+      - name: Action step
+        id: '1234'
+        uses: ralvescosta/insiderci-action@v0.0.9
         with:
           email: 'email@email.com'
           password: 'password'
