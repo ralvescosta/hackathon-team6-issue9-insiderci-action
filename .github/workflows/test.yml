@@ -22,4 +22,9 @@ jobs:
       - name: Hello world action step
         id: hello
         uses: ralvescosta/insiderci-action@v0.0.6
+        with:
+          email: 'email@email.com'
+          password: 'password'
+          technology: 'typescript'
+          security: 50
 
