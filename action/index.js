@@ -9251,6 +9251,7 @@ const logger_1 = __nccwpck_require__(8231);
     logger.debug('hello tcha tcha tcha!');
     console.log('hello tcha tcha tcha!');
     const args = actionHelper.getActionArgs();
+    console.log(args);
     if (args.right) {
         console.log(args.right.flags.join(','));
         console.log(JSON.stringify(args.right.args));
