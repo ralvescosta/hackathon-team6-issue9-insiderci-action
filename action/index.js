@@ -2,57 +2,6 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 418:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.ActionHelper = void 0;
-const path_1 = __importDefault(__nccwpck_require__(622));
-const core_1 = __importDefault(__nccwpck_require__(186));
-class ActionHelper {
-    constructor(_logger) {
-        this._logger = _logger;
-    }
-    getArguments() {
-        let githubWorkspacePath = process.env.GITHUB_WORKSPACE;
-        if (!githubWorkspacePath) {
-            throw new Error('GITHUB_WORKSPACE not defined');
-        }
-        githubWorkspacePath = path_1.default.resolve(githubWorkspacePath);
-        this._logger.debug(`GITHUB_WORKSPACE = '${githubWorkspacePath}'`);
-        const technology = core_1.default.getInput('technology');
-        const target = core_1.default.getInput('target') || '.';
-        const security = core_1.default.getInput('security');
-        const noJson = core_1.default.getInput('noJson');
-        const noHtml = core_1.default.getInput('noHtml');
-        const noBanner = core_1.default.getInput('noBanner');
-        githubWorkspacePath = path_1.default.resolve(githubWorkspacePath, target);
-        // required flags
-        const args = ['-tech', technology, '-target', githubWorkspacePath];
-        if (security) {
-            args.push('-security', security);
-        }
-        if (noJson) {
-            args.push('-no-json');
-        }
-        if (noHtml) {
-            args.push('-no-html');
-        }
-        if (noBanner) {
-            args.push('-no-banner');
-        }
-        return args;
-    }
-}
-exports.ActionHelper = ActionHelper;
-
-
-/***/ }),
-
 /***/ 231:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -649,13 +598,10 @@ var __webpack_exports__ = {};
 var exports = __webpack_exports__;
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const action_helper_1 = __nccwpck_require__(418);
 const logger_1 = __nccwpck_require__(231);
 (() => {
     const logger = new logger_1.Logger();
-    const actionHelpper = new action_helper_1.ActionHelper(logger);
-    logger.debug('hello tcha tcha tcha!');
-    logger.debug(actionHelpper.getArguments().join(','));
+    logger.info('hello tcha tcha tcha!');
 })();
 
 })();
