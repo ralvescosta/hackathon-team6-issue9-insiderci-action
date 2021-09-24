@@ -9245,18 +9245,19 @@ var exports = __webpack_exports__;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const action_helper_1 = __nccwpck_require__(1418);
 const logger_1 = __nccwpck_require__(8231);
-(() => {
+const runner = () => {
     const logger = new logger_1.Logger();
     const actionHelper = new action_helper_1.ActionHelper(logger);
     logger.debug('hello tcha tcha tcha!');
     console.log('hello tcha tcha tcha!');
     const args = actionHelper.getActionArgs();
-    console.log(args);
+    console.log('args', args);
     if (args.right) {
         console.log(args.right.flags.join(','));
         console.log(JSON.stringify(args.right.args));
     }
-})();
+};
+runner();
 
 })();
 
