@@ -21,8 +21,8 @@ jobs:
           - macOS-latest
           - windows-latest
     steps:
-    - name: Hello world action step
-        id: hello
-        uses: ralvescosta/insiderci-action@v0.0.1
-        with:
+      - name: Hello world action step
+          id: hello
+          uses: ralvescosta/insiderci-action@v0.0.1
+          with:
 
