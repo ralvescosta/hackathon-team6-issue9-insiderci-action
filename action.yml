@@ -3,7 +3,34 @@ author: 'insidersec'
 description: 'Official insider ci action'
 
 inputs:
-
+    version:
+        description: 'version of insider to use'
+        required: false
+    componentId:
+        description: 'The component id in Insider'
+        required: true
+    email:
+        description: 'The email in Insider'
+        required: true
+    password:
+        description: 'The password in Insider'
+        required: true
+    save:
+        description: 'Save results on file in json and html format'
+        required: false
+    target:
+        description: 'Specify where to look for files to execute the analyse'
+        required: false
+    technology:
+        description: 'Specify which technology ruleset to load. (Valid values are: android, ios, csharp, javascript)'
+        required: true
+    security:
+        description: 'Set the Security level, values between 0 and 100'
+        required: false
+    noFail:
+        description: ''
+        required: false
+        
 runs:
     using: 'node12'
     main: 'action/index.js'
