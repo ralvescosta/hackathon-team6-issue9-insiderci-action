@@ -1,10 +1,10 @@
 {
   "name": "insiderci-action",
   "version": "1.0.0",
-  "main": "lib/main.js",
+  "main": "dist/main.js",
   "license": "MIT",
   "scripts": {
-    "build": "tsc && ncc build",
+    "build": "tsc && ncc build -o action",
     "test": "jest --passWithNoTests --noStackTrace --runInBand --detectOpenHandles",
     "test:cov": "jest --coverage --detectOpenHandles",
     "test:watch": "jest --watchAll --noStackTrace --runInBand"

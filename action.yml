@@ -1,0 +1,9 @@
+name: 'Insider CI Action'
+author: 'insidersec'
+description: 'Official insider ci action'
+
+inputs:
+
+runs:
+    using: 'node12'
+    main: 'dist/index.js'

@@ -10,7 +10,7 @@ var __webpack_exports__ = {};
 ;
 (() => {
     console.log('hello tcha tcha tcha!');
-});
+})();
 
 module.exports = __webpack_exports__;
 /******/ })()
