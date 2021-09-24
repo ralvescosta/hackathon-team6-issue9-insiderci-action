@@ -19,6 +19,21 @@ export interface Result<Right = any, Left = BaseError> {
   left?: Left
 }
 
+export interface Args {
+  flags: string[]
+    args: {
+      version: string
+      componentId: string
+      email: string
+      password: string
+      save: string
+      target: string
+      technology: string
+      security: string
+      noFail: string
+  }
+}
+
 export interface IHttpClient {
   get (resource: string): Promise<Result<any>>
 }
@@ -26,4 +41,8 @@ export interface ICache {
   getTool: (configuredRelease: GitHubRelease, runtime: string) => Promise<Result<string>>
   extract: (osPlatform: string, downloadedPath: string) => Promise<Result<string>>
   cache: (extractionPath: string, release: GitHubRelease, osPlatform: string) => Promise<Result<string>>
+}
+export interface IActionHelper {
+  getActionArgs: () => any
+  uploadArtifacts: (path: string) => Promise<Result>
 }
