@@ -23,5 +23,5 @@ jobs:
     steps:
       - name: Hello world action step
         id: hello
-        uses: ralvescosta/insiderci-action@v0.0.1
+        uses: ralvescosta/insiderci-action@v0.0.2-beta
 
