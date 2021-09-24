@@ -20,7 +20,7 @@ jobs:
           - ubuntu-latest
     steps:
       - name: Action step
-        id: '1234'
+        id: actionId
         uses: ralvescosta/insiderci-action@v0.0.9
         with:
           email: 'email@email.com'
