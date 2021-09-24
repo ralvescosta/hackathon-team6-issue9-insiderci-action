@@ -1,4 +1,4 @@
-import core from '@actions/core'
+import * as core from '@actions/core'
 import { ILogger } from './interfaces'
 
 export class Logger implements ILogger {
