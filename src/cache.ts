@@ -6,7 +6,7 @@ export class Cache implements ICache {
   constructor (private readonly baseURL: string) {}
 
   public async getTool (configuredRelease: GitHubRelease, runtime: string): Promise<Result<string>> {
-    const url = `${this.baseURL}${configuredRelease.tag_name}/${runtime}`
+    const url = `${this.baseURL}/${configuredRelease.tag_name}/${runtime}`
     try {
       const result = await toolCache.downloadTool(url)
       return { right: result }

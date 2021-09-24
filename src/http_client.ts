@@ -9,7 +9,7 @@ export class HttpClient implements IHttpClient {
   }
 
   public async get (resource: string): Promise<Result<any>> {
-    const url = this.baseURL + resource
+    const url = `${this.baseURL}/${resource}`
 
     try {
       const response = await this.actionHttpClient.getJson(url)

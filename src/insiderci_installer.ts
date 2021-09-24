@@ -1,4 +1,4 @@
-import { IHttpClient, ILogger, ICache } from './interfaces'
+import { IHttpClient, ILogger, ICache, Result } from './interfaces'
 import * as os from 'os'
 
 export class InsiderCiInstaller {
@@ -14,7 +14,7 @@ export class InsiderCiInstaller {
     this._osArch = os.arch()
   }
 
-  public async exec (version: string) {
+  public async exec (version: string): Promise<Result<string>> {
     const release = await this._httpClient.get(version)
     if (release.left && !release.right) {
       this._logger.error('****** Something went wrong during the release check ******')
