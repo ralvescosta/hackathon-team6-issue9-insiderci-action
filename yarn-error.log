@@ -1,0 +1,41 @@
+Arguments: 
+  /home/ralvescosta/.asdf/installs/nodejs/14.17.3/bin/node /home/ralvescosta/.asdf/installs/nodejs/14.17.3/.npm/bin/yarn add @actions/artifac @actions/core @actions/glob @actions/exec @actions/http-client @actions/tool-cache
+
+PATH: 
+  /home/ralvescosta/.asdf/installs/nodejs/14.17.3/.npm/bin:/home/ralvescosta/.asdf/installs/nodejs/14.17.3/bin:/home/ralvescosta/.asdf/shims:/home/ralvescosta/.asdf/bin:/home/ralvescosta/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/ralvescosta/Android/Sdk/emulator:/home/ralvescosta/Android/Sdk/tools:/home/ralvescosta/Android/Sdk/tools/bin:/home/ralvescosta/Android/Sdk/platform-tools:/home/ralvescosta/.fzf/bin:/home/ralvescosta/Android/Sdk/emulator:/home/ralvescosta/Android/Sdk/tools:/home/ralvescosta/Android/Sdk/tools/bin:/home/ralvescosta/Android/Sdk/platform-tools:/home/ralvescosta/Android/Sdk/emulator:/home/ralvescosta/Android/Sdk/tools:/home/ralvescosta/Android/Sdk/tools/bin:/home/ralvescosta/Android/Sdk/platform-tools
+
+Yarn version: 
+  1.22.10
+
+Node version: 
+  14.17.3
+
+Platform: 
+  linux x64
+
+Trace: 
+  Error: https://registry.yarnpkg.com/@actions%2fartifac: Not found
+      at Request.params.callback [as _callback] (/home/ralvescosta/.asdf/installs/nodejs/14.17.3/.npm/lib/node_modules/yarn/lib/cli.js:66988:18)
+      at Request.self.callback (/home/ralvescosta/.asdf/installs/nodejs/14.17.3/.npm/lib/node_modules/yarn/lib/cli.js:140662:22)
+      at Request.emit (events.js:375:28)
+      at Request.<anonymous> (/home/ralvescosta/.asdf/installs/nodejs/14.17.3/.npm/lib/node_modules/yarn/lib/cli.js:141634:10)
+      at Request.emit (events.js:375:28)
+      at IncomingMessage.<anonymous> (/home/ralvescosta/.asdf/installs/nodejs/14.17.3/.npm/lib/node_modules/yarn/lib/cli.js:141556:12)
+      at Object.onceWrapper (events.js:481:28)
+      at IncomingMessage.emit (events.js:387:35)
+      at endReadableNT (internal/streams/readable.js:1317:12)
+      at processTicksAndRejections (internal/process/task_queues.js:82:21)
+
+npm manifest: 
+  {
+    "name": "insiderci-action",
+    "version": "1.0.0",
+    "main": "index.js",
+    "license": "MIT"
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
