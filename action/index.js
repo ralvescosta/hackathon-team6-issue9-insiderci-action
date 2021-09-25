@@ -484,26 +484,22 @@ const runner = () => __awaiter(void 0, void 0, void 0, function* () {
         files.forEach(fileName => {
             var _a;
             const filePath = path.join((_a = args.right) === null || _a === void 0 ? void 0 : _a.args.githubWorkspacePath, fileName);
-            const dir = path.dirname(fileName);
+            // const dir = path.dirname(fileName)
             const stats = fs.lstatSync(filePath);
             if (stats.isDirectory()) {
-                const zipDir = dir === '.' ? fileName : dir;
-                zip.addLocalFolder(filePath, zipDir);
+                // const zipDir = dir === '.' ? fileName : dir
+                zip.addLocalFolder(filePath);
             }
             else {
-                const zipDir = dir === '.' ? '' : dir;
-                zip.addLocalFile(filePath, zipDir);
+                // const zipDir = dir === '.' ? '' : dir
+                zip.addLocalFile(filePath);
             }
+            console.log(`  - ${filePath}`);
         });
     });
     const destPath = path.join((_c = args.right) === null || _c === void 0 ? void 0 : _c.args.githubWorkspacePath, 'project.zip');
-    logger.info('[1]**');
-    logger.info('**');
-    logger.info(zip.getZipComment());
-    logger.info('**');
-    logger.info('**');
     zip.writeZip(destPath);
-    logger.info('[2]**');
+    logger.info('[1]**');
     logger.info('**');
     logger.info(zip.getZipComment());
     logger.info('**');

@@ -42,29 +42,24 @@ const runner = async () => {
     files.forEach(fileName => {
       const filePath = path.join(args.right?.args.githubWorkspacePath!, fileName)
 
-      const dir = path.dirname(fileName)
+      // const dir = path.dirname(fileName)
       const stats = fs.lstatSync(filePath)
 
       if (stats.isDirectory()) {
-        const zipDir = dir === '.' ? fileName : dir
-        zip.addLocalFolder(filePath, zipDir)
+        // const zipDir = dir === '.' ? fileName : dir
+        zip.addLocalFolder(filePath)
       } else {
-        const zipDir = dir === '.' ? '' : dir
-        zip.addLocalFile(filePath, zipDir)
+        // const zipDir = dir === '.' ? '' : dir
+        zip.addLocalFile(filePath)
       }
+      console.log(`  - ${filePath}`)
     })
   })
 
   const destPath = path.join(args.right?.args.githubWorkspacePath!, 'project.zip')
-  logger.info('[1]**')
-  logger.info('**')
-  logger.info(zip.getZipComment())
-  logger.info('**')
-  logger.info('**')
-
   zip.writeZip(destPath)
 
-  logger.info('[2]**')
+  logger.info('[1]**')
   logger.info('**')
   logger.info(zip.getZipComment())
   logger.info('**')
