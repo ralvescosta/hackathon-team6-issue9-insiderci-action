@@ -3,5 +3,9 @@ describe('#ZipeFiles', () => {
     jest.clearAllMocks()
   })
 
-  describe('#zip', () => {})
+  describe('#zip', () => {
+    it('', () => {
+      expect(true).toBeTruthy()
+    })
+  })
 })

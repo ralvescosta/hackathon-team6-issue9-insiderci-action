@@ -3,5 +3,9 @@ describe('#HttpClient', () => {
     jest.clearAllMocks()
   })
 
-  describe('#get', () => {})
+  describe('#get', () => {
+    it('', () => {
+      expect(true).toBeTruthy()
+    })
+  })
 })

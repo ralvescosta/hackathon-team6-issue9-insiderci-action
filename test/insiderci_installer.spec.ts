@@ -3,5 +3,9 @@ describe('#InsiderCiInstaller', () => {
     jest.clearAllMocks()
   })
 
-  describe('#exec', () => {})
+  describe('#exec', () => {
+    it('', () => {
+      expect(true).toBeTruthy()
+    })
+  })
 })
