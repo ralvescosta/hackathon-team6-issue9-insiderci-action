@@ -45,5 +45,4 @@ export interface ICache {
 }
 export interface IActionHelper {
   getActionArgs: () => any
-  uploadArtifacts: (path: string) => Promise<Result>
 }

@@ -31,5 +31,5 @@ jobs:
           email: 'rafael.costa@inmetrics.com.br'
           password: 'Trocar@123$2021'
           technology: 'typescript'
-          security: 50
+          security: 10
 

@@ -1,18 +1,18 @@
 import { Args, IActionHelper, ILogger, Result } from './interfaces'
 import * as path from 'path'
 import * as core from '@actions/core'
-import * as artifact from '@actions/artifact'
-import * as glob from '@actions/glob'
+// import * as artifact from '@actions/artifact'
+// import * as glob from '@actions/glob'
 
 export class ActionHelper implements IActionHelper {
   constructor (private readonly _logger: ILogger) {}
   public getActionArgs (): Result<Args> {
+    this._logger.info('****** Reading action args... ******')
     let githubWorkspacePath = process.env.GITHUB_WORKSPACE
     if (!githubWorkspacePath) {
       return { left: new Error('GITHUB_WORKSPACE not defined') }
     }
     githubWorkspacePath = path.resolve(githubWorkspacePath)
-    this._logger.debug(`GITHUB_WORKSPACE = '${githubWorkspacePath}'`)
 
     const technology = core.getInput('technology')
     const componentId = core.getInput('componentId')
@@ -33,40 +33,6 @@ export class ActionHelper implements IActionHelper {
     return this._toArgsResponse({ version, componentId, email, password, save, target, technology, security, noFail, githubWorkspacePath })
   }
 
-  public async uploadArtifacts (path: string): Promise<Result> {
-    const artifactClient = artifact.create()
-    const artifactName = 'insiderci-artifact'
-
-    const files = await this._getReportFiles()
-    if (files.left && !files.right) {
-      return files
-    }
-
-    const uploadResponse = await artifactClient.uploadArtifact(
-      artifactName,
-      files.right!,
-      path,
-      { continueOnError: false }
-    )
-
-    if (uploadResponse.failedItems.length > 0) {
-      return { left: Error(`Error to upload artifacts: ${uploadResponse.failedItems}`) }
-    }
-
-    return { right: true }
-  }
-
-  private async _getReportFiles (): Promise<Result<string[]>> {
-    const patterns = ['*']
-    try {
-      const globber = await glob.create(patterns.join('\n'))
-      const files = await globber.glob()
-      return { right: files }
-    } catch (error) {
-      return { left: new Error('' + error) }
-    }
-  }
-
   private _toArgsResponse ({ version, componentId, email, password, save, target, technology, security, noFail, githubWorkspacePath }: {[Key: string]: string}): Result<Args> {
     const flags = ['-email', email, '-password', password, '-score', security]
 
@@ -82,8 +48,6 @@ export class ActionHelper implements IActionHelper {
     } else {
       flags.push('-tech', technology)
     }
-
-    flags.push(githubWorkspacePath)
 
     return {
       right: {
@@ -103,4 +67,38 @@ export class ActionHelper implements IActionHelper {
       }
     }
   }
+
+  // public async uploadArtifacts (path: string): Promise<Result> {
+  //   const artifactClient = artifact.create()
+  //   const artifactName = 'insiderci-artifact'
+
+  //   const files = await this._getReportFiles()
+  //   if (files.left && !files.right) {
+  //     return files
+  //   }
+
+  //   const uploadResponse = await artifactClient.uploadArtifact(
+  //     artifactName,
+  //     files.right!,
+  //     path,
+  //     { continueOnError: false }
+  //   )
+
+  //   if (uploadResponse.failedItems.length > 0) {
+  //     return { left: Error(`Error to upload artifacts: ${uploadResponse.failedItems}`) }
+  //   }
+
+  //   return { right: true }
+  // }
+
+  // private async _getReportFiles (): Promise<Result<string[]>> {
+  //   const patterns = ['*']
+  //   try {
+  //     const globber = await glob.create(patterns.join('\n'))
+  //     const files = await globber.glob()
+  //     return { right: files }
+  //   } catch (error) {
+  //     return { left: new Error('' + error) }
+  //   }
+  // }
 }

@@ -24,7 +24,7 @@ export class InsiderCiInstaller {
 
     const runtimeInfo = this._getRuntimeInfo()
 
-    this._logger.info('⬇️ Downloading Insider CI')
+    this._logger.info('****** ⬇️ Downloading Insider CI ******')
     const toolPath = await this._cache.getTool(release.right!, runtimeInfo)
     if (toolPath.left && !toolPath.right) {
       this._logger.error('****** Something went wrong during the download ******')
