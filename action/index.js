@@ -170,17 +170,20 @@ exports.Cache = void 0;
 const toolCache = __importStar(__nccwpck_require__(7784));
 const path = __importStar(__nccwpck_require__(5622));
 class Cache {
-    constructor(baseURL) {
+    constructor(baseURL, _logger) {
         this.baseURL = baseURL;
+        this._logger = _logger;
     }
     getTool(configuredRelease, runtime) {
         return __awaiter(this, void 0, void 0, function* () {
             const url = `${this.baseURL}/${configuredRelease.tag_name}/${runtime}`;
+            this._logger.info(`[Cache :: getTool] - ${url}`);
             try {
                 const result = yield toolCache.downloadTool(url);
                 return { right: result };
             }
             catch (error) {
+                this._logger.info(`${error}`);
                 return { left: new Error('' + error) };
             }
         });
@@ -446,27 +449,28 @@ const cache_1 = __nccwpck_require__(4833);
 const http_client_1 = __nccwpck_require__(6175);
 const core = __importStar(__nccwpck_require__(2186));
 const path = __importStar(__nccwpck_require__(5622));
+const INSIDER_CI_RELEASE_URL = 'https://github.com/insidersec/insider/releases';
+const INSIDER_CI_DOWNLOAD_URL = `${INSIDER_CI_RELEASE_URL}/download`;
 const runner = () => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
-    console.log('[1] - tcha tcha tcha!');
     const logger = new logger_1.Logger();
     const actionHelper = new action_helper_1.ActionHelper(logger);
-    const cache = new cache_1.Cache('https://github.com/insidersec/insider/releases/download');
-    const httpClient = new http_client_1.HttpClient('https://github.com/insidersec/insiderci/releases');
+    const cache = new cache_1.Cache(INSIDER_CI_DOWNLOAD_URL, logger);
+    const httpClient = new http_client_1.HttpClient(INSIDER_CI_RELEASE_URL);
     const insiderCiInstaller = new insiderci_installer_1.InsiderCiInstaller(httpClient, cache, logger);
-    console.log('[2] - tcha tcha tcha!');
+    logger.info('[2] - tcha tcha tcha!');
     const args = actionHelper.getActionArgs();
     if (args.left && !args.right) {
         return core.setFailed(args.left.message);
     }
-    console.log('[3] - tcha tcha tcha!');
+    logger.info('[3] - tcha tcha tcha!');
     const insiderCi = yield insiderCiInstaller.exec((_a = args.right) === null || _a === void 0 ? void 0 : _a.args.version);
     if (insiderCi.left && !insiderCi.right) {
         return core.setFailed(insiderCi.left.message);
     }
-    console.log('[4] - tcha tcha tcha!');
+    logger.info('[4] - tcha tcha tcha!');
     const insiderCiPath = path.dirname(insiderCi.right);
-    console.log(`[5] - 📂 Using ${insiderCiPath} as working directory...`);
+    logger.info(`[5] - 📂 Using ${insiderCiPath} as working directory...`);
     logger.info(`📂 Using ${insiderCiPath} as working directory...`);
 });
 runner();

@@ -1,16 +1,18 @@
-import { GitHubRelease, ICache, Result } from './interfaces'
+import { GitHubRelease, ICache, ILogger, Result } from './interfaces'
 import * as toolCache from '@actions/tool-cache'
 import * as path from 'path'
 
 export class Cache implements ICache {
-  constructor (private readonly baseURL: string) {}
+  constructor (private readonly baseURL: string, private readonly _logger: ILogger) {}
 
   public async getTool (configuredRelease: GitHubRelease, runtime: string): Promise<Result<string>> {
     const url = `${this.baseURL}/${configuredRelease.tag_name}/${runtime}`
+    this._logger.info(`[Cache :: getTool] - ${url}`)
     try {
       const result = await toolCache.downloadTool(url)
       return { right: result }
     } catch (error) {
+      this._logger.info(`${error}`)
       return { left: new Error('' + error) }
     }
   }
