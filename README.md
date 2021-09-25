@@ -2,6 +2,8 @@
   <img src="https://www.insidersec.io/wp-content/uploads/2020/11/cover-linkedin2.png">
 </p>
 
+[![test](https://github.com/ralvescosta/hackathon-insiderci-action/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/ralvescosta/hackathon-insiderci-action/actions/workflows/test.yml)
+
 The Insider CI Action enables you to integrate the [insider.io](https://console.insidersec.io/) platform in your pipeline.
 
 ## Contents
