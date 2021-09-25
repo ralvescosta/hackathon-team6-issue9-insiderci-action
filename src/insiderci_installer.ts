@@ -54,6 +54,6 @@ export class InsiderCiInstaller {
     const currentArch = this._osArch === 'x64' ? 'x86_64' : 'i386'
     const ext = this._osPlatform === 'win32' ? 'zip' : 'tar.gz'
 
-    return `insider_${version}_${currentPlatform}_${currentArch}.${ext}`
+    return `insiderci_${version}_${currentPlatform}_${currentArch}.${ext}`
   }
 }

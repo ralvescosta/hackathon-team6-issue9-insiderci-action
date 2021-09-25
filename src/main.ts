@@ -9,7 +9,7 @@ import * as exec from '@actions/exec'
 import * as path from 'path'
 import * as fs from 'fs'
 
-const INSIDER_CI_RELEASE_URL = 'https://github.com/insidersec/insider/releases'
+const INSIDER_CI_RELEASE_URL = 'https://github.com/insidersec/insiderci/releases'
 const INSIDER_CI_DOWNLOAD_URL = `${INSIDER_CI_RELEASE_URL}/download`
 
 const runner = async () => {
@@ -33,34 +33,40 @@ const runner = async () => {
   logger.info(`📂 Using ${insiderCiPath} as working directory...`)
   process.chdir(insiderCiPath)
 
-  logger.info('***')
+  logger.info('[1] - ***')
   fs.readdir('.', (_err, items) => {
     console.log(items)
-    for (let i = 0; i < items.length; i++) {
-      console.log(items[i])
+    if (items) {
+      for (let i = 0; i < items.length; i++) {
+        console.log(items[i])
+      }
     }
   })
   logger.info('***')
 
-  logger.info('***')
+  logger.info('[2] - ***')
   fs.readdir(insiderCi.right!, (_err, items) => {
     console.log(items)
-    for (let i = 0; i < items.length; i++) {
-      console.log(items[i])
+    if (items) {
+      for (let i = 0; i < items.length; i++) {
+        console.log(items[i])
+      }
     }
   })
   logger.info('***')
 
-  logger.info('***')
+  logger.info('[3] - ***')
   fs.readdir(insiderCiPath, (_err, items) => {
     console.log(items)
-    for (let i = 0; i < items.length; i++) {
-      console.log(items[i])
+    if (items) {
+      for (let i = 0; i < items.length; i++) {
+        console.log(items[i])
+      }
     }
   })
   logger.info('***')
 
-  logger.info(`[1] - ${insiderCi.right} ${args.right?.flags}`)
+  logger.info(`${insiderCi.right} ${args.right?.flags}`)
   // logger.info('🏃 Running Insider CI...')
   // await exec.exec(`${insiderCi.right}`, args.right?.flags)
   // logger.info(' Finished Insider')

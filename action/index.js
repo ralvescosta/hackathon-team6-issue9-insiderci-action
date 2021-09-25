@@ -352,7 +352,7 @@ class InsiderCiInstaller {
         const currentPlatform = this._osPlatform === 'win32' ? 'windows' : this._osPlatform;
         const currentArch = this._osArch === 'x64' ? 'x86_64' : 'i386';
         const ext = this._osPlatform === 'win32' ? 'zip' : 'tar.gz';
-        return `insider_${version}_${currentPlatform}_${currentArch}.${ext}`;
+        return `insiderci_${version}_${currentPlatform}_${currentArch}.${ext}`;
     }
 }
 exports.InsiderCiInstaller = InsiderCiInstaller;
@@ -448,7 +448,7 @@ const http_client_1 = __nccwpck_require__(6175);
 const core = __importStar(__nccwpck_require__(2186));
 const path = __importStar(__nccwpck_require__(5622));
 const fs = __importStar(__nccwpck_require__(5747));
-const INSIDER_CI_RELEASE_URL = 'https://github.com/insidersec/insider/releases';
+const INSIDER_CI_RELEASE_URL = 'https://github.com/insidersec/insiderci/releases';
 const INSIDER_CI_DOWNLOAD_URL = `${INSIDER_CI_RELEASE_URL}/download`;
 const runner = () => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
@@ -468,31 +468,37 @@ const runner = () => __awaiter(void 0, void 0, void 0, function* () {
     const insiderCiPath = path.dirname(insiderCi.right);
     logger.info(`📂 Using ${insiderCiPath} as working directory...`);
     process.chdir(insiderCiPath);
-    logger.info('***');
+    logger.info('[1] - ***');
     fs.readdir('.', (_err, items) => {
         console.log(items);
-        for (let i = 0; i < items.length; i++) {
-            console.log(items[i]);
+        if (items) {
+            for (let i = 0; i < items.length; i++) {
+                console.log(items[i]);
+            }
         }
     });
     logger.info('***');
-    logger.info('***');
+    logger.info('[2] - ***');
     fs.readdir(insiderCi.right, (_err, items) => {
         console.log(items);
-        for (let i = 0; i < items.length; i++) {
-            console.log(items[i]);
+        if (items) {
+            for (let i = 0; i < items.length; i++) {
+                console.log(items[i]);
+            }
         }
     });
     logger.info('***');
-    logger.info('***');
+    logger.info('[3] - ***');
     fs.readdir(insiderCiPath, (_err, items) => {
         console.log(items);
-        for (let i = 0; i < items.length; i++) {
-            console.log(items[i]);
+        if (items) {
+            for (let i = 0; i < items.length; i++) {
+                console.log(items[i]);
+            }
         }
     });
     logger.info('***');
-    logger.info(`[1] - ${insiderCi.right} ${(_b = args.right) === null || _b === void 0 ? void 0 : _b.flags}`);
+    logger.info(`${insiderCi.right} ${(_b = args.right) === null || _b === void 0 ? void 0 : _b.flags}`);
     // logger.info('🏃 Running Insider CI...')
     // await exec.exec(`${insiderCi.right}`, args.right?.flags)
     // logger.info(' Finished Insider')
