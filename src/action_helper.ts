@@ -65,7 +65,7 @@ export class ActionHelper implements IActionHelper {
   }
 
   private async _getReportFiles (): Promise<Result<string[]>> {
-    const patterns = ['report-*.html', 'report-*.json']
+    const patterns = ['*']
     try {
       const globber = await glob.create(patterns.join('\n'))
       const files = await globber.glob()

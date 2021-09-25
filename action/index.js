@@ -90,7 +90,7 @@ class ActionHelper {
     }
     _getReportFiles() {
         return __awaiter(this, void 0, void 0, function* () {
-            const patterns = ['report-*.html', 'report-*.json'];
+            const patterns = ['*'];
             try {
                 const globber = yield glob.create(patterns.join('\n'));
                 const files = yield globber.glob();
