@@ -177,11 +177,13 @@ class Cache {
     getTool(configuredRelease, runtime) {
         return __awaiter(this, void 0, void 0, function* () {
             const url = `${this.baseURL}/${configuredRelease.tag_name}/${runtime}`;
+            this._logger.info(`[Cache :: getTool] - ${url}`);
             try {
                 const result = yield toolCache.downloadTool(url);
                 return { right: result };
             }
             catch (error) {
+                this._logger.error(`ERROR [Cache :: getTool] - ${error}`);
                 return { left: new Error('' + error) };
             }
         });
