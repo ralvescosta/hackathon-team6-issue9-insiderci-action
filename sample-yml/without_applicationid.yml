@@ -22,7 +22,7 @@ jobs:
 
       - name: Insider CI action
         id: insiderci_action
-        uses: ralvescosta/insiderci-action@v0.0.40
+        uses: ralvescosta/hackathon-team6-issue9-insiderci-action@v0.0.42
         with:
           email: ${{ secrets.insider_email }}
           password: ${{ secrets.insider_password }}
