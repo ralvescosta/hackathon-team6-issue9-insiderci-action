@@ -454,6 +454,7 @@ const core = __importStar(__nccwpck_require__(2186));
 const exec = __importStar(__nccwpck_require__(1514));
 const path = __importStar(__nccwpck_require__(5622));
 const fs = __importStar(__nccwpck_require__(5747));
+const util = __importStar(__nccwpck_require__(1669));
 const INSIDER_CI_RELEASE_URL = 'https://github.com/insidersec/insiderci/releases';
 const INSIDER_CI_DOWNLOAD_URL = `${INSIDER_CI_RELEASE_URL}/download`;
 const runner = () => __awaiter(void 0, void 0, void 0, function* () {
@@ -475,30 +476,24 @@ const runner = () => __awaiter(void 0, void 0, void 0, function* () {
     logger.info(`📂 Using ${insiderCiPath} as working directory...`);
     // process.chdir(insiderCiPath)
     const zip = new adm_zip_1.default();
-    fs.readdir((_b = args.right) === null || _b === void 0 ? void 0 : _b.args.githubWorkspacePath, (_err, files) => {
-        if (_err) {
-            return _err;
+    const files = yield util.promisify(fs.readdir)((_b = args.right) === null || _b === void 0 ? void 0 : _b.args.githubWorkspacePath);
+    files.forEach(fileName => {
+        var _a;
+        const filePath = path.join((_a = args.right) === null || _a === void 0 ? void 0 : _a.args.githubWorkspacePath, fileName);
+        // const dir = path.dirname(fileName)
+        const stats = fs.lstatSync(filePath);
+        if (stats.isDirectory()) {
+            // const zipDir = dir === '.' ? fileName : dir
+            zip.addLocalFolder(filePath);
         }
-        if (!files)
-            return false;
-        files.forEach(fileName => {
-            var _a;
-            const filePath = path.join((_a = args.right) === null || _a === void 0 ? void 0 : _a.args.githubWorkspacePath, fileName);
-            // const dir = path.dirname(fileName)
-            const stats = fs.lstatSync(filePath);
-            if (stats.isDirectory()) {
-                // const zipDir = dir === '.' ? fileName : dir
-                zip.addLocalFolder(filePath);
-            }
-            else {
-                // const zipDir = dir === '.' ? '' : dir
-                zip.addLocalFile(filePath);
-            }
-            console.log(`  - ${filePath}`);
-        });
+        else {
+            // const zipDir = dir === '.' ? '' : dir
+            zip.addLocalFile(filePath);
+        }
+        console.log(`  - ${filePath}`);
     });
     const destPath = path.join((_c = args.right) === null || _c === void 0 ? void 0 : _c.args.githubWorkspacePath, 'project.zip');
-    zip.writeZip(destPath);
+    zip.writeZip(destPath, (error) => logger.error(`${error}`));
     logger.info('[1]**');
     logger.info('**');
     logger.info(zip.getZipComment());

@@ -9,6 +9,7 @@ import * as core from '@actions/core'
 import * as exec from '@actions/exec'
 import * as path from 'path'
 import * as fs from 'fs'
+import * as util from 'util'
 
 const INSIDER_CI_RELEASE_URL = 'https://github.com/insidersec/insiderci/releases'
 const INSIDER_CI_DOWNLOAD_URL = `${INSIDER_CI_RELEASE_URL}/download`
@@ -34,30 +35,26 @@ const runner = async () => {
   logger.info(`📂 Using ${insiderCiPath} as working directory...`)
   // process.chdir(insiderCiPath)
   const zip = new AdmZip()
-  fs.readdir(args.right?.args.githubWorkspacePath!, (_err, files) => {
-    if (_err) { return _err }
 
-    if (!files) return false
+  const files = await util.promisify(fs.readdir)(args.right?.args.githubWorkspacePath!)
+  files.forEach(fileName => {
+    const filePath = path.join(args.right?.args.githubWorkspacePath!, fileName)
 
-    files.forEach(fileName => {
-      const filePath = path.join(args.right?.args.githubWorkspacePath!, fileName)
+    // const dir = path.dirname(fileName)
+    const stats = fs.lstatSync(filePath)
 
-      // const dir = path.dirname(fileName)
-      const stats = fs.lstatSync(filePath)
-
-      if (stats.isDirectory()) {
-        // const zipDir = dir === '.' ? fileName : dir
-        zip.addLocalFolder(filePath)
-      } else {
-        // const zipDir = dir === '.' ? '' : dir
-        zip.addLocalFile(filePath)
-      }
-      console.log(`  - ${filePath}`)
-    })
+    if (stats.isDirectory()) {
+      // const zipDir = dir === '.' ? fileName : dir
+      zip.addLocalFolder(filePath)
+    } else {
+      // const zipDir = dir === '.' ? '' : dir
+      zip.addLocalFile(filePath)
+    }
+    console.log(`  - ${filePath}`)
   })
 
   const destPath = path.join(args.right?.args.githubWorkspacePath!, 'project.zip')
-  zip.writeZip(destPath)
+  zip.writeZip(destPath, (error) => logger.error(`${error}`))
 
   logger.info('[1]**')
   logger.info('**')
