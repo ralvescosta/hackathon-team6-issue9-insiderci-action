@@ -177,13 +177,11 @@ class Cache {
     getTool(configuredRelease, runtime) {
         return __awaiter(this, void 0, void 0, function* () {
             const url = `${this.baseURL}/${configuredRelease.tag_name}/${runtime}`;
-            this._logger.info(`[Cache :: getTool] - ${url}`);
             try {
                 const result = yield toolCache.downloadTool(url);
                 return { right: result };
             }
             catch (error) {
-                this._logger.info(`${error}`);
                 return { left: new Error('' + error) };
             }
         });
@@ -453,7 +451,7 @@ const path = __importStar(__nccwpck_require__(5622));
 const INSIDER_CI_RELEASE_URL = 'https://github.com/insidersec/insider/releases';
 const INSIDER_CI_DOWNLOAD_URL = `${INSIDER_CI_RELEASE_URL}/download`;
 const runner = () => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b;
+    var _a, _b, _c;
     const logger = new logger_1.Logger();
     const actionHelper = new action_helper_1.ActionHelper(logger);
     const cache = new cache_1.Cache(INSIDER_CI_DOWNLOAD_URL, logger);
@@ -470,8 +468,9 @@ const runner = () => __awaiter(void 0, void 0, void 0, function* () {
     const insiderCiPath = path.dirname(insiderCi.right);
     logger.info(`📂 Using ${insiderCiPath} as working directory...`);
     process.chdir(insiderCiPath);
+    logger.info(`[1] - ${insiderCi.right} ${(_b = args.right) === null || _b === void 0 ? void 0 : _b.flags}`);
     logger.info('🏃 Running Insider CI...');
-    yield exec.exec(`${insiderCi}`, (_b = args.right) === null || _b === void 0 ? void 0 : _b.flags);
+    yield exec.exec(`${insiderCi.right}`, (_c = args.right) === null || _c === void 0 ? void 0 : _c.flags);
     logger.info(' Finished Insider');
 });
 runner();

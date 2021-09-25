@@ -7,12 +7,10 @@ export class Cache implements ICache {
 
   public async getTool (configuredRelease: GitHubRelease, runtime: string): Promise<Result<string>> {
     const url = `${this.baseURL}/${configuredRelease.tag_name}/${runtime}`
-    this._logger.info(`[Cache :: getTool] - ${url}`)
     try {
       const result = await toolCache.downloadTool(url)
       return { right: result }
     } catch (error) {
-      this._logger.info(`${error}`)
       return { left: new Error('' + error) }
     }
   }

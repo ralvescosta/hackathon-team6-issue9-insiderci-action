@@ -32,8 +32,9 @@ const runner = async () => {
   logger.info(`📂 Using ${insiderCiPath} as working directory...`)
   process.chdir(insiderCiPath)
 
+  logger.info(`[1] - ${insiderCi.right} ${args.right?.flags}`)
   logger.info('🏃 Running Insider CI...')
-  await exec.exec(`${insiderCi}`, args.right?.flags)
+  await exec.exec(`${insiderCi.right}`, args.right?.flags)
   logger.info(' Finished Insider')
 }
 
