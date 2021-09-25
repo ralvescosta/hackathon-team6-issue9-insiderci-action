@@ -42,11 +42,6 @@ const runner = async () => {
     files.forEach(fileName => {
       const filePath = path.join(args.right?.args.githubWorkspacePath!, fileName)
 
-      if (!fs.existsSync(filePath)) {
-        console.log(`  - ${fileName} (Not Found)`)
-        return
-      }
-
       const dir = path.dirname(fileName)
       const stats = fs.lstatSync(filePath)
 
@@ -57,19 +52,28 @@ const runner = async () => {
         const zipDir = dir === '.' ? '' : dir
         zip.addLocalFile(filePath, zipDir)
       }
-
-      console.log(`  - ${fileName}`)
     })
   })
 
-  const destPath = path.join(args.right?.args.githubWorkspacePath!, 'result.zip')
+  const destPath = path.join(args.right?.args.githubWorkspacePath!, 'project.zip')
   zip.writeZip(destPath)
+
+  logger.info('**')
+  logger.info('**')
+  logger.info(zip.getZipComment())
+  logger.info('**')
+  logger.info('**')
 
   args.right!.flags[args.right!.flags.length - 1] = destPath
 
   logger.info(`${insiderCi.right} ${args.right?.flags}`)
   logger.info('🏃 Running Insider CI...')
-  await exec.exec(`${insiderCi.right}`, args.right?.flags)
+  try {
+    await exec.exec(`${insiderCi.right}`, args.right?.flags)
+  } catch (error) {
+    logger.error(`${error}`)
+  }
+
   logger.info(' Finished Insider')
 }
 

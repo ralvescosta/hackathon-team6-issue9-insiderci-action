@@ -484,10 +484,6 @@ const runner = () => __awaiter(void 0, void 0, void 0, function* () {
         files.forEach(fileName => {
             var _a;
             const filePath = path.join((_a = args.right) === null || _a === void 0 ? void 0 : _a.args.githubWorkspacePath, fileName);
-            if (!fs.existsSync(filePath)) {
-                console.log(`  - ${fileName} (Not Found)`);
-                return;
-            }
             const dir = path.dirname(fileName);
             const stats = fs.lstatSync(filePath);
             if (stats.isDirectory()) {
@@ -498,15 +494,24 @@ const runner = () => __awaiter(void 0, void 0, void 0, function* () {
                 const zipDir = dir === '.' ? '' : dir;
                 zip.addLocalFile(filePath, zipDir);
             }
-            console.log(`  - ${fileName}`);
         });
     });
-    const destPath = path.join((_c = args.right) === null || _c === void 0 ? void 0 : _c.args.githubWorkspacePath, 'result.zip');
+    const destPath = path.join((_c = args.right) === null || _c === void 0 ? void 0 : _c.args.githubWorkspacePath, 'project.zip');
     zip.writeZip(destPath);
+    logger.info('**');
+    logger.info('**');
+    logger.info(zip.getZipComment());
+    logger.info('**');
+    logger.info('**');
     args.right.flags[args.right.flags.length - 1] = destPath;
     logger.info(`${insiderCi.right} ${(_d = args.right) === null || _d === void 0 ? void 0 : _d.flags}`);
     logger.info('🏃 Running Insider CI...');
-    yield exec.exec(`${insiderCi.right}`, (_e = args.right) === null || _e === void 0 ? void 0 : _e.flags);
+    try {
+        yield exec.exec(`${insiderCi.right}`, (_e = args.right) === null || _e === void 0 ? void 0 : _e.flags);
+    }
+    catch (error) {
+        logger.error(`${error}`);
+    }
     logger.info(' Finished Insider');
 });
 runner();
