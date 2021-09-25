@@ -354,7 +354,7 @@ class InsiderCiInstaller {
         const currentPlatform = this._osPlatform === 'win32' ? 'windows' : this._osPlatform;
         const currentArch = this._osArch === 'x64' ? 'x86_64' : 'i386';
         const ext = this._osPlatform === 'win32' ? 'zip' : 'tar.gz';
-        return `insiderci_${version}_${currentPlatform}_${currentArch}.${ext}`;
+        return `insiderci_${currentPlatform}_${currentArch}.${ext}`;
     }
 }
 exports.InsiderCiInstaller = InsiderCiInstaller;
