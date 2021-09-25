@@ -18,14 +18,11 @@ export class ZipeFiles {
     files.forEach(fileName => {
       const filePath = path.join(dir, fileName)
 
-      // const dir = path.dirname(fileName)
       const stats = fs.lstatSync(filePath)
 
       if (stats.isDirectory()) {
-      // const zipDir = dir === '.' ? fileName : dir
         zip.addLocalFolder(filePath)
       } else {
-      // const zipDir = dir === '.' ? '' : dir
         zip.addLocalFile(filePath)
       }
     })
