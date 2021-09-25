@@ -5,6 +5,8 @@ import { Cache } from './cache'
 import { HttpClient } from './http_client'
 import { ZipeFiles } from './zip'
 
+import * as actionHttp from '@actions/http-client'
+
 const INSIDER_CI_RELEASE_URL = 'https://github.com/insidersec/insiderci/releases'
 const INSIDER_CI_DOWNLOAD_URL = `${INSIDER_CI_RELEASE_URL}/download`
 
@@ -12,7 +14,7 @@ const runner = async () => {
   const logger = new Logger()
   const actionHelper = new ActionHelper(logger)
   const cache = new Cache(INSIDER_CI_DOWNLOAD_URL)
-  const httpClient = new HttpClient(INSIDER_CI_RELEASE_URL)
+  const httpClient = new HttpClient(new actionHttp.HttpClient(), INSIDER_CI_RELEASE_URL)
   const insiderCiInstaller = new InsiderCiInstaller(httpClient, cache, logger)
   const zipFiles = new ZipeFiles(logger)
 

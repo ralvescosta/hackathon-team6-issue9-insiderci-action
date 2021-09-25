@@ -13,26 +13,25 @@ export class ZipeFiles implements IZipeFiles {
   public async zip (dir: string): Promise<Result<string>> {
     this._logger.info('****** Compress files... ******')
     const zip = new AdmZip()
-
-    const files = await util.promisify(fs.readdir)(dir)
-    files.forEach(fileName => {
-      const filePath = path.join(dir, fileName)
-
-      const stats = fs.lstatSync(filePath)
-
-      if (stats.isDirectory()) {
-        zip.addLocalFolder(filePath)
-      } else {
-        zip.addLocalFile(filePath)
-      }
-    })
-
     try {
+      const files = await util.promisify(fs.readdir)(dir)
+      files.forEach(fileName => {
+        const filePath = path.join(dir, fileName)
+
+        const stats = fs.lstatSync(filePath)
+
+        if (stats.isDirectory()) {
+          zip.addLocalFolder(filePath)
+        } else {
+          zip.addLocalFile(filePath)
+        }
+      })
+
       const destPath = path.join(dir, this.ZIP_DESTINATION)
       await util.promisify(zip.writeZip)(destPath)
       return { right: destPath }
     } catch (error) {
-      this._logger.info('****** Something went wrong during the compress process ******')
+      this._logger.error('****** Something went wrong during the compress process ******')
       return { left: new Error(`${error}`) }
     }
   }

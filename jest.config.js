@@ -2,7 +2,8 @@ module.exports = {
   roots: ['<rootDir>'],
   globals: {},
   collectCoverageFrom: [
-    '<rootDir>/src/**/*.ts'
+    '<rootDir>/src/**/*.ts',
+    '!<rootDir>/src/main.ts'
   ],
   coverageDirectory: 'coverage',
   coverageThreshold: {
