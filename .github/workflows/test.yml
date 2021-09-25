@@ -18,19 +18,18 @@ jobs:
       matrix:
         os:
           - ubuntu-latest
-          - windows-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
 
-      - name: Action step
-        id: actionId
+      - name: Insider CI action
+        id: insiderci_action
         uses: ralvescosta/insiderci-action@v0.0.40
         with:
-          email: 'rafael.costa@inmetrics.com.br'
-          password: 'Trocar@123$2021'
+          email: ${{ secrets.insider_email }}
+          password: ${{ secrets.insider_password }}
           technology: 'typescript'
           security: 10
 
