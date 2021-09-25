@@ -6,8 +6,8 @@ inputs:
     version:
         description: 'version of insider to use'
         required: false
-    componentId:
-        description: 'The component id in Insider'
+    applicationId:
+        description: 'The application id create in Insider'
         required: false
     email:
         description: 'The email in Insider'
@@ -25,7 +25,7 @@ inputs:
         description: 'Set the Security level, values between 0 and 100'
         required: false
     noFail:
-        description: 'Bypass the security level validation'
+        description: 'Skip the security level validation'
         required: false
         
 runs:
