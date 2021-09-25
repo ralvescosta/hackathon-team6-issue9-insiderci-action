@@ -40,7 +40,7 @@ const runner = async () => {
     if (!files) return false
 
     files.forEach(fileName => {
-      const filePath = path.join(process.env.GITHUB_WORKSPACE!, fileName)
+      const filePath = path.join(args.right?.args.githubWorkspacePath!, fileName)
 
       if (!fs.existsSync(filePath)) {
         console.log(`  - ${fileName} (Not Found)`)
@@ -62,17 +62,15 @@ const runner = async () => {
     })
   })
 
-  const destPath = path.join(process.env.GITHUB_WORKSPACE!, 'result.zip')
+  const destPath = path.join(args.right?.args.githubWorkspacePath!, 'result.zip')
   zip.writeZip(destPath)
 
-  fs.readdir(args.right?.args.githubWorkspacePath!, (_err, files) => {
-    console.log(files)
-  })
+  args.right!.flags[args.right!.flags.length - 1] = destPath
 
   logger.info(`${insiderCi.right} ${args.right?.flags}`)
-  // logger.info('🏃 Running Insider CI...')
-  // await exec.exec(`${insiderCi.right}`, args.right?.flags)
-  // logger.info(' Finished Insider')
+  logger.info('🏃 Running Insider CI...')
+  await exec.exec(`${insiderCi.right}`, args.right?.flags)
+  logger.info(' Finished Insider')
 }
 
 runner()

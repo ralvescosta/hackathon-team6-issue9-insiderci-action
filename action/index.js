@@ -451,12 +451,13 @@ const cache_1 = __nccwpck_require__(4833);
 const http_client_1 = __nccwpck_require__(6175);
 const adm_zip_1 = __importDefault(__nccwpck_require__(6761));
 const core = __importStar(__nccwpck_require__(2186));
+const exec = __importStar(__nccwpck_require__(1514));
 const path = __importStar(__nccwpck_require__(5622));
 const fs = __importStar(__nccwpck_require__(5747));
 const INSIDER_CI_RELEASE_URL = 'https://github.com/insidersec/insiderci/releases';
 const INSIDER_CI_DOWNLOAD_URL = `${INSIDER_CI_RELEASE_URL}/download`;
 const runner = () => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c, _d;
+    var _a, _b, _c, _d, _e;
     const logger = new logger_1.Logger();
     const actionHelper = new action_helper_1.ActionHelper(logger);
     const cache = new cache_1.Cache(INSIDER_CI_DOWNLOAD_URL, logger);
@@ -481,7 +482,8 @@ const runner = () => __awaiter(void 0, void 0, void 0, function* () {
         if (!files)
             return false;
         files.forEach(fileName => {
-            const filePath = path.join(process.env.GITHUB_WORKSPACE, fileName);
+            var _a;
+            const filePath = path.join((_a = args.right) === null || _a === void 0 ? void 0 : _a.args.githubWorkspacePath, fileName);
             if (!fs.existsSync(filePath)) {
                 console.log(`  - ${fileName} (Not Found)`);
                 return;
@@ -499,15 +501,13 @@ const runner = () => __awaiter(void 0, void 0, void 0, function* () {
             console.log(`  - ${fileName}`);
         });
     });
-    const destPath = path.join(process.env.GITHUB_WORKSPACE, 'result.zip');
+    const destPath = path.join((_c = args.right) === null || _c === void 0 ? void 0 : _c.args.githubWorkspacePath, 'result.zip');
     zip.writeZip(destPath);
-    fs.readdir((_c = args.right) === null || _c === void 0 ? void 0 : _c.args.githubWorkspacePath, (_err, files) => {
-        console.log(files);
-    });
+    args.right.flags[args.right.flags.length - 1] = destPath;
     logger.info(`${insiderCi.right} ${(_d = args.right) === null || _d === void 0 ? void 0 : _d.flags}`);
-    // logger.info('🏃 Running Insider CI...')
-    // await exec.exec(`${insiderCi.right}`, args.right?.flags)
-    // logger.info(' Finished Insider')
+    logger.info('🏃 Running Insider CI...');
+    yield exec.exec(`${insiderCi.right}`, (_e = args.right) === null || _e === void 0 ? void 0 : _e.flags);
+    logger.info(' Finished Insider');
 });
 runner();
 
