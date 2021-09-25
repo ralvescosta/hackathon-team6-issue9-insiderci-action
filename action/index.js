@@ -446,13 +446,12 @@ const insiderci_installer_1 = __nccwpck_require__(5620);
 const cache_1 = __nccwpck_require__(4833);
 const http_client_1 = __nccwpck_require__(6175);
 const core = __importStar(__nccwpck_require__(2186));
-const exec = __importStar(__nccwpck_require__(1514));
 const path = __importStar(__nccwpck_require__(5622));
 const fs = __importStar(__nccwpck_require__(5747));
 const INSIDER_CI_RELEASE_URL = 'https://github.com/insidersec/insider/releases';
 const INSIDER_CI_DOWNLOAD_URL = `${INSIDER_CI_RELEASE_URL}/download`;
 const runner = () => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c;
+    var _a, _b;
     const logger = new logger_1.Logger();
     const actionHelper = new action_helper_1.ActionHelper(logger);
     const cache = new cache_1.Cache(INSIDER_CI_DOWNLOAD_URL, logger);
@@ -485,10 +484,18 @@ const runner = () => __awaiter(void 0, void 0, void 0, function* () {
         }
     });
     logger.info('***');
+    logger.info('***');
+    fs.readdir(insiderCiPath, (_err, items) => {
+        console.log(items);
+        for (let i = 0; i < items.length; i++) {
+            console.log(items[i]);
+        }
+    });
+    logger.info('***');
     logger.info(`[1] - ${insiderCi.right} ${(_b = args.right) === null || _b === void 0 ? void 0 : _b.flags}`);
-    logger.info('🏃 Running Insider CI...');
-    yield exec.exec(`${insiderCi.right}`, (_c = args.right) === null || _c === void 0 ? void 0 : _c.flags);
-    logger.info(' Finished Insider');
+    // logger.info('🏃 Running Insider CI...')
+    // await exec.exec(`${insiderCi.right}`, args.right?.flags)
+    // logger.info(' Finished Insider')
 });
 runner();
 

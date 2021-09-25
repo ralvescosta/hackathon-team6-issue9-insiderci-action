@@ -51,10 +51,19 @@ const runner = async () => {
   })
   logger.info('***')
 
+  logger.info('***')
+  fs.readdir(insiderCiPath, (_err, items) => {
+    console.log(items)
+    for (let i = 0; i < items.length; i++) {
+      console.log(items[i])
+    }
+  })
+  logger.info('***')
+
   logger.info(`[1] - ${insiderCi.right} ${args.right?.flags}`)
-  logger.info('🏃 Running Insider CI...')
-  await exec.exec(`${insiderCi.right}`, args.right?.flags)
-  logger.info(' Finished Insider')
+  // logger.info('🏃 Running Insider CI...')
+  // await exec.exec(`${insiderCi.right}`, args.right?.flags)
+  // logger.info(' Finished Insider')
 }
 
 runner()
