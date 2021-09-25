@@ -49,14 +49,6 @@ export class ActionHelper implements IActionHelper {
       { continueOnError: false }
     )
 
-    this._logger.info('[0] ****--')
-    this._logger.info(path)
-    this._logger.info('[1] ****')
-    this._logger.info(uploadResponse.artifactItems.join(','))
-    this._logger.info('[2] ****')
-    this._logger.info(uploadResponse.failedItems.join(','))
-    this._logger.info('[3] ****')
-
     if (uploadResponse.failedItems.length > 0) {
       return { left: Error(`Error to upload artifacts: ${uploadResponse.failedItems}`) }
     }

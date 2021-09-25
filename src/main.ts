@@ -4,9 +4,11 @@ import { InsiderCiInstaller } from './insiderci_installer'
 import { Cache } from './cache'
 import { HttpClient } from './http_client'
 
+import AdmZip from 'adm-zip'
 import * as core from '@actions/core'
 import * as exec from '@actions/exec'
 import * as path from 'path'
+import * as fs from 'fs'
 
 const INSIDER_CI_RELEASE_URL = 'https://github.com/insidersec/insiderci/releases'
 const INSIDER_CI_DOWNLOAD_URL = `${INSIDER_CI_RELEASE_URL}/download`
@@ -31,13 +33,46 @@ const runner = async () => {
   const insiderCiPath = path.dirname(insiderCi.right!)
   logger.info(`📂 Using ${insiderCiPath} as working directory...`)
   // process.chdir(insiderCiPath)
+  const zip = new AdmZip()
+  fs.readdir(args.right?.args.githubWorkspacePath!, (_err, files) => {
+    if (_err) { return _err }
+
+    if (!files) return false
+
+    files.forEach(fileName => {
+      const filePath = path.join(process.env.GITHUB_WORKSPACE!, fileName)
+
+      if (!fs.existsSync(filePath)) {
+        console.log(`  - ${fileName} (Not Found)`)
+        return
+      }
+
+      const dir = path.dirname(fileName)
+      const stats = fs.lstatSync(filePath)
+
+      if (stats.isDirectory()) {
+        const zipDir = dir === '.' ? fileName : dir
+        zip.addLocalFolder(filePath, zipDir)
+      } else {
+        const zipDir = dir === '.' ? '' : dir
+        zip.addLocalFile(filePath, zipDir)
+      }
+
+      console.log(`  - ${fileName}`)
+    })
+  })
+
+  const destPath = path.join(process.env.GITHUB_WORKSPACE!, 'result.zip')
+  zip.writeZip(destPath)
+
+  fs.readdir(args.right?.args.githubWorkspacePath!, (_err, files) => {
+    console.log(files)
+  })
 
   logger.info(`${insiderCi.right} ${args.right?.flags}`)
   // logger.info('🏃 Running Insider CI...')
   // await exec.exec(`${insiderCi.right}`, args.right?.flags)
   // logger.info(' Finished Insider')
-
-  actionHelper.uploadArtifacts(args.right?.args.githubWorkspacePath!)
 }
 
 runner()
