@@ -2,19 +2,19 @@
   <img src="https://www.insidersec.io/wp-content/uploads/2020/11/cover-linkedin2.png">
 </p>
 
-The Insider CI action enables you to integrate the [insider.io](https://console.insidersec.io/) platform in your pipeline.
+The Insider CI Action enables you to integrate the [insider.io](https://console.insidersec.io/) platform in your pipeline.
 
 ## Contents
 
 - [Usage](#usage)
   - [Inputs](#inputs)
-  - [Configure Insider Access in Github Secretes](configure-insider-access-in-github-secretes)
-  - [Get the Application Id](get-the-application-id)
+  - [Configure Insider Access in Github Secretes](#configure-insider-access-in-github-secretes)
+  - [Get the Application Id](#get-the-application-id)
 
 
 ## Usage
 
-Two basic examples of using the action are provided [here](). 
+Two basic examples of using the action are provided [here](https://github.com/ralvescosta/hackathon-insiderci-action/tree/main/sample-yml). 
 
 ### Inputs
 

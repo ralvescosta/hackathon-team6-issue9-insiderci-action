@@ -26,6 +26,6 @@ jobs:
         with:
           email: ${{ secrets.insider_email }}
           password: ${{ secrets.insider_password }}
-          componentId: '1440'
+          applicationId: '1440'
           security: 10
 
