@@ -1,7 +1,8 @@
 {
     "env": {
         "es2021": true,
-        "node": true
+        "node": true,
+        "jest": true
     },
     "extends": [
         "standard"
@@ -16,6 +17,7 @@
     ],
     "rules": {
         "no-useless-constructor": "off",
-        "camelcase": "off"
+        "camelcase": "off",
+        "indent": "off"
     }
 }

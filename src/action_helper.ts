@@ -19,12 +19,12 @@ export class ActionHelper implements IActionHelper {
       return { left: new Error('You need to set technology or applicationId variable') }
     }
 
-    const version = core.getInput('version') || 'latest'
+    const version = core.getInput('version')
     const email = core.getInput('email')
     const password = core.getInput('password')
     const save = core.getInput('save')
-    const target = core.getInput('target') || '.'
-    const security = core.getInput('security') || '0'
+    const target = core.getInput('target')
+    const security = core.getInput('security')
     const noFail = core.getInput('noFail')
 
     githubWorkspacePath = path.resolve(githubWorkspacePath, target)
@@ -50,9 +50,6 @@ export class ActionHelper implements IActionHelper {
   private _toArgsResponse ({ version, componentId, email, password, save, target, technology, security, noFail, githubWorkspacePath }: {[Key: string]: string}): Result<Args> {
     const flags = ['-email', email, '-password', password, '-score', security]
 
-    if (save) {
-      flags.push('-save')
-    }
     if (noFail) {
       flags.push('-no-fail')
     }

@@ -6,6 +6,7 @@ inputs:
     version:
         description: 'version of insider to use'
         required: false
+        default: 'latest'
     applicationId:
         description: 'The application id create in Insider'
         required: false
@@ -18,12 +19,14 @@ inputs:
     target:
         description: 'Specify where to look for files to execute the analyse'
         required: false
+        default: '.'
     technology:
         description: 'Specify which technology ruleset to load. (Valid values are: android, ios, csharp, javascript)'
         required: false
     security:
         description: 'Set the Security level, values between 0 and 100'
         required: false
+        default: '0'
     noFail:
         description: 'Skip the security level validation'
         required: false
