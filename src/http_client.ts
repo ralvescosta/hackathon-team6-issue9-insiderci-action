@@ -15,7 +15,7 @@ export class HttpClient implements IHttpClient {
       const response = await this.actionHttpClient.getJson(url)
       return { right: response.result as any }
     } catch (error) {
-      return { left: new Error('' + error) }
+      return { left: new Error(`${error}`) }
     }
   }
 }

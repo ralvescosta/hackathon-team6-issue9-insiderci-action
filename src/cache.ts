@@ -11,7 +11,7 @@ export class Cache implements ICache {
       const result = await toolCache.downloadTool(url)
       return { right: result }
     } catch (error) {
-      return { left: new Error('' + error) }
+      return { left: new Error(`${error}`) }
     }
   }
 
@@ -25,7 +25,7 @@ export class Cache implements ICache {
       const result = await toolCache.extractTar(downloadedPath)
       return { right: result }
     } catch (error) {
-      return { left: new Error('' + error) }
+      return { left: new Error(`${error}`) }
     }
   }
 

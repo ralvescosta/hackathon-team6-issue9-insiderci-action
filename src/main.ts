@@ -5,9 +5,6 @@ import { Cache } from './cache'
 import { HttpClient } from './http_client'
 import { ZipeFiles } from './zip'
 
-import * as core from '@actions/core'
-import * as exec from '@actions/exec'
-
 const INSIDER_CI_RELEASE_URL = 'https://github.com/insidersec/insiderci/releases'
 const INSIDER_CI_DOWNLOAD_URL = `${INSIDER_CI_RELEASE_URL}/download`
 
@@ -21,30 +18,27 @@ const runner = async () => {
 
   const args = actionHelper.getActionArgs()
   if (args.left && !args.right) {
-    return core.setFailed(args.left.message)
+    return actionHelper.actionFail(args.left.message)
   }
 
   const insiderCi = await insiderCiInstaller.exec(args.right?.args.version!)
   if (insiderCi.left && !insiderCi.right) {
-    return core.setFailed(insiderCi.left.message)
+    return actionHelper.actionFail(insiderCi.left.message)
   }
 
   const zipPath = await zipFiles.zip(args.right?.args.githubWorkspacePath!)
   if (zipPath.left && !zipPath.right) {
-    return core.setFailed(zipPath.left.message)
+    return actionHelper.actionFail(zipPath.left.message)
   }
 
   args.right!.flags.push(zipPath.right!)
 
-  logger.info('****** 🏃 Running Insider CI... ******')
-  try {
-    await exec.exec(`${insiderCi.right}`, args.right?.flags)
-  } catch (error) {
-    logger.error(`${error}`)
-    return core.setFailed(`${error}`)
+  const result = await actionHelper.exec(insiderCi.right!, args.right?.flags!)
+  if (result.left && !result.right) {
+    return actionHelper.actionFail(result.left.message)
   }
 
-  logger.info('******  Finished Insider ******')
+  logger.info('******  Finished Insider CI ******')
 }
 
 runner()

@@ -25,10 +25,20 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ActionHelper = void 0;
 const path = __importStar(__nccwpck_require__(5622));
 const core = __importStar(__nccwpck_require__(2186));
+const exec = __importStar(__nccwpck_require__(1514));
 class ActionHelper {
     constructor(_logger) {
         this._logger = _logger;
@@ -54,6 +64,22 @@ class ActionHelper {
         const noFail = core.getInput('noFail');
         githubWorkspacePath = path.resolve(githubWorkspacePath, target);
         return this._toArgsResponse({ version, componentId, email, password, save, target, technology, security, noFail, githubWorkspacePath });
+    }
+    actionFail(error) {
+        core.setFailed(error);
+    }
+    exec(command, args) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this._logger.info('****** 🏃 Running Insider CI... ******');
+            try {
+                const result = yield exec.exec(command, args);
+                return { right: result };
+            }
+            catch (error) {
+                this._logger.error('****** Something went wrong during the action execute ******');
+                return { left: new Error(`${error}`) };
+            }
+        });
     }
     _toArgsResponse({ version, componentId, email, password, save, target, technology, security, noFail, githubWorkspacePath }) {
         const flags = ['-email', email, '-password', password, '-score', security];
@@ -143,7 +169,7 @@ class Cache {
                 return { right: result };
             }
             catch (error) {
-                return { left: new Error('' + error) };
+                return { left: new Error(`${error}`) };
             }
         });
     }
@@ -158,7 +184,7 @@ class Cache {
                 return { right: result };
             }
             catch (error) {
-                return { left: new Error('' + error) };
+                return { left: new Error(`${error}`) };
             }
         });
     }
@@ -224,7 +250,7 @@ class HttpClient {
                 return { right: response.result };
             }
             catch (error) {
-                return { left: new Error('' + error) };
+                return { left: new Error(`${error}`) };
             }
         });
     }
@@ -372,25 +398,6 @@ exports.Logger = Logger;
 
 "use strict";
 
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -407,8 +414,6 @@ const insiderci_installer_1 = __nccwpck_require__(5620);
 const cache_1 = __nccwpck_require__(4833);
 const http_client_1 = __nccwpck_require__(6175);
 const zip_1 = __nccwpck_require__(2693);
-const core = __importStar(__nccwpck_require__(2186));
-const exec = __importStar(__nccwpck_require__(1514));
 const INSIDER_CI_RELEASE_URL = 'https://github.com/insidersec/insiderci/releases';
 const INSIDER_CI_DOWNLOAD_URL = `${INSIDER_CI_RELEASE_URL}/download`;
 const runner = () => __awaiter(void 0, void 0, void 0, function* () {
@@ -421,26 +426,22 @@ const runner = () => __awaiter(void 0, void 0, void 0, function* () {
     const zipFiles = new zip_1.ZipeFiles(logger);
     const args = actionHelper.getActionArgs();
     if (args.left && !args.right) {
-        return core.setFailed(args.left.message);
+        return actionHelper.actionFail(args.left.message);
     }
     const insiderCi = yield insiderCiInstaller.exec((_a = args.right) === null || _a === void 0 ? void 0 : _a.args.version);
     if (insiderCi.left && !insiderCi.right) {
-        return core.setFailed(insiderCi.left.message);
+        return actionHelper.actionFail(insiderCi.left.message);
     }
     const zipPath = yield zipFiles.zip((_b = args.right) === null || _b === void 0 ? void 0 : _b.args.githubWorkspacePath);
     if (zipPath.left && !zipPath.right) {
-        return core.setFailed(zipPath.left.message);
+        return actionHelper.actionFail(zipPath.left.message);
     }
     args.right.flags.push(zipPath.right);
-    logger.info('****** 🏃 Running Insider CI... ******');
-    try {
-        yield exec.exec(`${insiderCi.right}`, (_c = args.right) === null || _c === void 0 ? void 0 : _c.flags);
+    const result = yield actionHelper.exec(insiderCi.right, (_c = args.right) === null || _c === void 0 ? void 0 : _c.flags);
+    if (result.left && !result.right) {
+        return actionHelper.actionFail(result.left.message);
     }
-    catch (error) {
-        logger.error(`${error}`);
-        return core.setFailed(`${error}`);
-    }
-    logger.info('******  Finished Insider ******');
+    logger.info('******  Finished Insider CI ******');
 });
 runner();
 
@@ -516,7 +517,7 @@ class ZipeFiles {
             }
             catch (error) {
                 this._logger.info('****** Something went wrong during the compress process ******');
-                return { left: new Error('' + error) };
+                return { left: new Error(`${error}`) };
             }
         });
     }

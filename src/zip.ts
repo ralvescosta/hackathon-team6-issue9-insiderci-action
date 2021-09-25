@@ -1,11 +1,11 @@
-import { ILogger, Result } from './interfaces'
+import { ILogger, IZipeFiles, Result } from './interfaces'
 
 import * as fs from 'fs'
 import * as util from 'util'
 import * as path from 'path'
 import AdmZip from 'adm-zip'
 
-export class ZipeFiles {
+export class ZipeFiles implements IZipeFiles {
   private readonly ZIP_DESTINATION = 'project.zip'
 
   constructor (private readonly _logger: ILogger) {}
@@ -33,7 +33,7 @@ export class ZipeFiles {
       return { right: destPath }
     } catch (error) {
       this._logger.info('****** Something went wrong during the compress process ******')
-      return { left: new Error('' + error) }
+      return { left: new Error(`${error}`) }
     }
   }
 }

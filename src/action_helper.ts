@@ -1,6 +1,7 @@
 import { Args, IActionHelper, ILogger, Result } from './interfaces'
 import * as path from 'path'
 import * as core from '@actions/core'
+import * as exec from '@actions/exec'
 
 export class ActionHelper implements IActionHelper {
   constructor (private readonly _logger: ILogger) {}
@@ -29,6 +30,21 @@ export class ActionHelper implements IActionHelper {
     githubWorkspacePath = path.resolve(githubWorkspacePath, target)
 
     return this._toArgsResponse({ version, componentId, email, password, save, target, technology, security, noFail, githubWorkspacePath })
+  }
+
+  public actionFail (error: string | Error): void {
+    core.setFailed(error)
+  }
+
+  public async exec (command: string, args: string[]): Promise<Result<number>> {
+    this._logger.info('****** 🏃 Running Insider CI... ******')
+    try {
+      const result = await exec.exec(command, args)
+      return { right: result }
+    } catch (error) {
+      this._logger.error('****** Something went wrong during the action execute ******')
+      return { left: new Error(`${error}`) }
+    }
   }
 
   private _toArgsResponse ({ version, componentId, email, password, save, target, technology, security, noFail, githubWorkspacePath }: {[Key: string]: string}): Result<Args> {

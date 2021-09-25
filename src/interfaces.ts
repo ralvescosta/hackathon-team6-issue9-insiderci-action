@@ -45,4 +45,9 @@ export interface ICache {
 }
 export interface IActionHelper {
   getActionArgs: () => any
+  actionFail: (error: string | Error) => void
+  exec: (command: string, args: string[]) => Promise<Result<number>>
+}
+export interface IZipeFiles {
+  zip: (dir: string) => Promise<Result<string>>
 }
