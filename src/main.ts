@@ -38,10 +38,9 @@ const runner = async () => {
   // await exec.exec(`${insiderCi.right}`, args.right?.flags)
   // logger.info(' Finished Insider')
 
-  fs.readdir(args.right?.args.githubWorkspacePath!, (_err, files) => {
-    if (files) {
-      console.log(files)
-    }
+  fs.readdir(process.env.GITHUB_WORKSPACE!, (_err, files) => {
+    logger.info(_err?.message!)
+    console.log(files)
   })
 
   actionHelper.uploadArtifacts(args.right?.args.githubWorkspacePath!)
