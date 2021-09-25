@@ -37,9 +37,8 @@ const runner = async () => {
   // logger.info('🏃 Running Insider CI...')
   // await exec.exec(`${insiderCi.right}`, args.right?.flags)
   // logger.info(' Finished Insider')
-
+  console.log(process.env.GITHUB_WORKSPACE!)
   fs.readdir(process.env.GITHUB_WORKSPACE!, (_err, files) => {
-    logger.info(_err?.message!)
     console.log(files)
   })
 

@@ -480,8 +480,8 @@ const runner = () => __awaiter(void 0, void 0, void 0, function* () {
     // logger.info('🏃 Running Insider CI...')
     // await exec.exec(`${insiderCi.right}`, args.right?.flags)
     // logger.info(' Finished Insider')
+    console.log(process.env.GITHUB_WORKSPACE);
     fs.readdir(process.env.GITHUB_WORKSPACE, (_err, files) => {
-        logger.info(_err === null || _err === void 0 ? void 0 : _err.message);
         console.log(files);
     });
     actionHelper.uploadArtifacts((_c = args.right) === null || _c === void 0 ? void 0 : _c.args.githubWorkspacePath);
