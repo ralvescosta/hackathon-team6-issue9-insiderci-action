@@ -448,30 +448,31 @@ const insiderci_installer_1 = __nccwpck_require__(5620);
 const cache_1 = __nccwpck_require__(4833);
 const http_client_1 = __nccwpck_require__(6175);
 const core = __importStar(__nccwpck_require__(2186));
+const exec = __importStar(__nccwpck_require__(1514));
 const path = __importStar(__nccwpck_require__(5622));
 const INSIDER_CI_RELEASE_URL = 'https://github.com/insidersec/insider/releases';
 const INSIDER_CI_DOWNLOAD_URL = `${INSIDER_CI_RELEASE_URL}/download`;
 const runner = () => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
+    var _a, _b;
     const logger = new logger_1.Logger();
     const actionHelper = new action_helper_1.ActionHelper(logger);
     const cache = new cache_1.Cache(INSIDER_CI_DOWNLOAD_URL, logger);
     const httpClient = new http_client_1.HttpClient(INSIDER_CI_RELEASE_URL);
     const insiderCiInstaller = new insiderci_installer_1.InsiderCiInstaller(httpClient, cache, logger);
-    logger.info('[2] - tcha tcha tcha!');
     const args = actionHelper.getActionArgs();
     if (args.left && !args.right) {
         return core.setFailed(args.left.message);
     }
-    logger.info('[3] - tcha tcha tcha!');
     const insiderCi = yield insiderCiInstaller.exec((_a = args.right) === null || _a === void 0 ? void 0 : _a.args.version);
     if (insiderCi.left && !insiderCi.right) {
         return core.setFailed(insiderCi.left.message);
     }
-    logger.info('[4] - tcha tcha tcha!');
     const insiderCiPath = path.dirname(insiderCi.right);
-    logger.info(`[5] - 📂 Using ${insiderCiPath} as working directory...`);
     logger.info(`📂 Using ${insiderCiPath} as working directory...`);
+    process.chdir(insiderCiPath);
+    logger.info('🏃 Running Insider CI...');
+    yield exec.exec(`${insiderCi}`, (_b = args.right) === null || _b === void 0 ? void 0 : _b.flags);
+    logger.info(' Finished Insider');
 });
 runner();
 

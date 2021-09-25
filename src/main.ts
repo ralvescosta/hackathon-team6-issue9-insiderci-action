@@ -5,6 +5,7 @@ import { Cache } from './cache'
 import { HttpClient } from './http_client'
 
 import * as core from '@actions/core'
+import * as exec from '@actions/exec'
 import * as path from 'path'
 
 const INSIDER_CI_RELEASE_URL = 'https://github.com/insidersec/insider/releases'
@@ -17,21 +18,23 @@ const runner = async () => {
   const httpClient = new HttpClient(INSIDER_CI_RELEASE_URL)
   const insiderCiInstaller = new InsiderCiInstaller(httpClient, cache, logger)
 
-  logger.info('[2] - tcha tcha tcha!')
   const args = actionHelper.getActionArgs()
   if (args.left && !args.right) {
     return core.setFailed(args.left.message)
   }
-  logger.info('[3] - tcha tcha tcha!')
 
   const insiderCi = await insiderCiInstaller.exec(args.right?.args.version!)
   if (insiderCi.left && !insiderCi.right) {
     return core.setFailed(insiderCi.left.message)
   }
-  logger.info('[4] - tcha tcha tcha!')
+
   const insiderCiPath = path.dirname(insiderCi.right!)
-  logger.info(`[5] - 📂 Using ${insiderCiPath} as working directory...`)
   logger.info(`📂 Using ${insiderCiPath} as working directory...`)
+  process.chdir(insiderCiPath)
+
+  logger.info('🏃 Running Insider CI...')
+  await exec.exec(`${insiderCi}`, args.right?.flags)
+  logger.info(' Finished Insider')
 }
 
 runner()
