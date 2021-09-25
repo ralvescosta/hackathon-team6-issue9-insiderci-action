@@ -22,7 +22,7 @@ export class InsiderCiInstaller {
     }
     this._logger.info(`****** Insider CI version found: ${release.right!.tag_name} ******`)
 
-    const runtimeInfo = this._getRuntimeInfo(release.right!.tag_name)
+    const runtimeInfo = this._getRuntimeInfo()
 
     this._logger.info('⬇️ Downloading Insider CI')
     const toolPath = await this._cache.getTool(release.right!, runtimeInfo)
@@ -49,7 +49,7 @@ export class InsiderCiInstaller {
     return cachedPath
   }
 
-  private _getRuntimeInfo (version: string) {
+  private _getRuntimeInfo () {
     const currentPlatform = this._osPlatform === 'win32' ? 'windows' : this._osPlatform
     const currentArch = this._osArch === 'x64' ? 'x86_64' : 'i386'
     const ext = this._osPlatform === 'win32' ? 'zip' : 'tar.gz'
