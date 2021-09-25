@@ -49,7 +49,7 @@ export class ActionHelper implements IActionHelper {
       { continueOnError: false }
     )
 
-    this._logger.info('[0] ****')
+    this._logger.info('[0] ****--')
     this._logger.info(path)
     this._logger.info('[1] ****')
     this._logger.info(uploadResponse.artifactItems.join(','))

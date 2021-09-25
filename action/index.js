@@ -75,7 +75,7 @@ class ActionHelper {
                 return files;
             }
             const uploadResponse = yield artifactClient.uploadArtifact(artifactName, files.right, path, { continueOnError: false });
-            this._logger.info('[0] ****');
+            this._logger.info('[0] ****--');
             this._logger.info(path);
             this._logger.info('[1] ****');
             this._logger.info(uploadResponse.artifactItems.join(','));
