@@ -24,12 +24,3 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Insider CI action
-        id: insiderci_action
-        uses: ralvescosta/insiderci-action@v0.0.40
-        with:
-          email: ${{ secrets.insider_email }}
-          password: ${{ secrets.insider_password }}
-          componentId: '1440'
-          security: 10
-
