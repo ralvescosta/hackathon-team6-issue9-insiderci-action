@@ -51,16 +51,16 @@ class ActionHelper {
         }
         githubWorkspacePath = path.resolve(githubWorkspacePath);
         const technology = core.getInput('technology');
-        const componentId = core.getInput('componentId');
+        const componentId = core.getInput('applicationId');
         if (!technology && !componentId) {
-            return { left: new Error('You need to set technology or componentId variable') };
+            return { left: new Error('You need to set technology or applicationId variable') };
         }
-        const version = core.getInput('version') || 'latest';
+        const version = core.getInput('version');
         const email = core.getInput('email');
         const password = core.getInput('password');
         const save = core.getInput('save');
-        const target = core.getInput('target') || '.';
-        const security = core.getInput('security') || '0';
+        const target = core.getInput('target');
+        const security = core.getInput('security');
         const noFail = core.getInput('noFail');
         githubWorkspacePath = path.resolve(githubWorkspacePath, target);
         return this._toArgsResponse({ version, componentId, email, password, save, target, technology, security, noFail, githubWorkspacePath });
@@ -83,9 +83,6 @@ class ActionHelper {
     }
     _toArgsResponse({ version, componentId, email, password, save, target, technology, security, noFail, githubWorkspacePath }) {
         const flags = ['-email', email, '-password', password, '-score', security];
-        if (save) {
-            flags.push('-save');
-        }
         if (noFail) {
             flags.push('-no-fail');
         }
@@ -157,9 +154,8 @@ exports.Cache = void 0;
 const toolCache = __importStar(__nccwpck_require__(7784));
 const path = __importStar(__nccwpck_require__(5622));
 class Cache {
-    constructor(baseURL, _logger) {
+    constructor(baseURL) {
         this.baseURL = baseURL;
-        this._logger = _logger;
     }
     getTool(configuredRelease, runtime) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -420,7 +416,7 @@ const runner = () => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c;
     const logger = new logger_1.Logger();
     const actionHelper = new action_helper_1.ActionHelper(logger);
-    const cache = new cache_1.Cache(INSIDER_CI_DOWNLOAD_URL, logger);
+    const cache = new cache_1.Cache(INSIDER_CI_DOWNLOAD_URL);
     const httpClient = new http_client_1.HttpClient(INSIDER_CI_RELEASE_URL);
     const insiderCiInstaller = new insiderci_installer_1.InsiderCiInstaller(httpClient, cache, logger);
     const zipFiles = new zip_1.ZipeFiles(logger);

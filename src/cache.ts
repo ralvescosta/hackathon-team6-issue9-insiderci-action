@@ -1,9 +1,9 @@
-import { GitHubRelease, ICache, ILogger, Result } from './interfaces'
+import { GitHubRelease, ICache, Result } from './interfaces'
 import * as toolCache from '@actions/tool-cache'
 import * as path from 'path'
 
 export class Cache implements ICache {
-  constructor (private readonly baseURL: string, private readonly _logger: ILogger) {}
+  constructor (private readonly baseURL: string) {}
 
   public async getTool (configuredRelease: GitHubRelease, runtime: string): Promise<Result<string>> {
     const url = `${this.baseURL}/${configuredRelease.tag_name}/${runtime}`
@@ -15,7 +15,7 @@ export class Cache implements ICache {
     }
   }
 
-  async extract (osPlatform: string, downloadedPath: string): Promise<Result<string>> {
+  public async extract (osPlatform: string, downloadedPath: string): Promise<Result<string>> {
     try {
       if (osPlatform === 'win32') {
         const result = await toolCache.extractZip(downloadedPath)
@@ -29,7 +29,7 @@ export class Cache implements ICache {
     }
   }
 
-  async cache (extractedPath: string, release: GitHubRelease, osPlatform: string): Promise<Result<string>> {
+  public async cache (extractedPath: string, release: GitHubRelease, osPlatform: string): Promise<Result<string>> {
     const cachePath: string = await toolCache.cacheDir(
       extractedPath,
       'insiderci-action',

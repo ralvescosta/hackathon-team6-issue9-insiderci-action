@@ -11,7 +11,7 @@ const INSIDER_CI_DOWNLOAD_URL = `${INSIDER_CI_RELEASE_URL}/download`
 const runner = async () => {
   const logger = new Logger()
   const actionHelper = new ActionHelper(logger)
-  const cache = new Cache(INSIDER_CI_DOWNLOAD_URL, logger)
+  const cache = new Cache(INSIDER_CI_DOWNLOAD_URL)
   const httpClient = new HttpClient(INSIDER_CI_RELEASE_URL)
   const insiderCiInstaller = new InsiderCiInstaller(httpClient, cache, logger)
   const zipFiles = new ZipeFiles(logger)
