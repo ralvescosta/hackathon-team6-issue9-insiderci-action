@@ -15,9 +15,6 @@ inputs:
     password:
         description: 'The password in Insider'
         required: true
-    save:
-        description: 'Save results on file in json and html format'
-        required: false
     target:
         description: 'Specify where to look for files to execute the analyse'
         required: false
@@ -28,7 +25,7 @@ inputs:
         description: 'Set the Security level, values between 0 and 100'
         required: false
     noFail:
-        description: ''
+        description: 'Bypass the security level validation'
         required: false
         
 runs:
