@@ -68,7 +68,7 @@ export class ActionHelper implements IActionHelper {
   }
 
   private _toArgsResponse ({ version, componentId, email, password, save, target, technology, security, noFail, githubWorkspacePath }: {[Key: string]: string}): Result<Args> {
-    const flags = ['-email', email, '-password', password, '-score', security, '-tech', technology]
+    const flags = ['-email', email, '-password', password, '-score', security]
 
     if (save) {
       flags.push('-save')
@@ -80,7 +80,7 @@ export class ActionHelper implements IActionHelper {
     if (componentId) {
       flags.push('-component', componentId)
     } else {
-      flags.push('-tach', technology)
+      flags.push('-tech', technology)
     }
 
     flags.push(githubWorkspacePath)

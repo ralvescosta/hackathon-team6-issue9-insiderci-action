@@ -95,7 +95,7 @@ class ActionHelper {
         });
     }
     _toArgsResponse({ version, componentId, email, password, save, target, technology, security, noFail, githubWorkspacePath }) {
-        const flags = ['-email', email, '-password', password, '-score', security, '-tech', technology];
+        const flags = ['-email', email, '-password', password, '-score', security];
         if (save) {
             flags.push('-save');
         }
@@ -106,7 +106,7 @@ class ActionHelper {
             flags.push('-component', componentId);
         }
         else {
-            flags.push('-tach', technology);
+            flags.push('-tech', technology);
         }
         flags.push(githubWorkspacePath);
         return {
