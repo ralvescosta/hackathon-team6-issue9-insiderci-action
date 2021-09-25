@@ -455,7 +455,6 @@ const cache_1 = __nccwpck_require__(4833);
 const http_client_1 = __nccwpck_require__(6175);
 const core = __importStar(__nccwpck_require__(2186));
 const path = __importStar(__nccwpck_require__(5622));
-const fs = __importStar(__nccwpck_require__(5747));
 const INSIDER_CI_RELEASE_URL = 'https://github.com/insidersec/insiderci/releases';
 const INSIDER_CI_DOWNLOAD_URL = `${INSIDER_CI_RELEASE_URL}/download`;
 const runner = () => __awaiter(void 0, void 0, void 0, function* () {
@@ -475,15 +474,11 @@ const runner = () => __awaiter(void 0, void 0, void 0, function* () {
     }
     const insiderCiPath = path.dirname(insiderCi.right);
     logger.info(`📂 Using ${insiderCiPath} as working directory...`);
-    process.chdir(insiderCiPath);
+    // process.chdir(insiderCiPath)
     logger.info(`${insiderCi.right} ${(_b = args.right) === null || _b === void 0 ? void 0 : _b.flags}`);
     // logger.info('🏃 Running Insider CI...')
     // await exec.exec(`${insiderCi.right}`, args.right?.flags)
     // logger.info(' Finished Insider')
-    console.log(process.env.GITHUB_WORKSPACE);
-    fs.readdir(process.env.GITHUB_WORKSPACE, (_err, files) => {
-        console.log(files);
-    });
     actionHelper.uploadArtifacts((_c = args.right) === null || _c === void 0 ? void 0 : _c.args.githubWorkspacePath);
 });
 runner();

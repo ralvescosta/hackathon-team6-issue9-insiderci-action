@@ -7,7 +7,6 @@ import { HttpClient } from './http_client'
 import * as core from '@actions/core'
 import * as exec from '@actions/exec'
 import * as path from 'path'
-import * as fs from 'fs'
 
 const INSIDER_CI_RELEASE_URL = 'https://github.com/insidersec/insiderci/releases'
 const INSIDER_CI_DOWNLOAD_URL = `${INSIDER_CI_RELEASE_URL}/download`
@@ -31,16 +30,12 @@ const runner = async () => {
 
   const insiderCiPath = path.dirname(insiderCi.right!)
   logger.info(`📂 Using ${insiderCiPath} as working directory...`)
-  process.chdir(insiderCiPath)
+  // process.chdir(insiderCiPath)
 
   logger.info(`${insiderCi.right} ${args.right?.flags}`)
   // logger.info('🏃 Running Insider CI...')
   // await exec.exec(`${insiderCi.right}`, args.right?.flags)
   // logger.info(' Finished Insider')
-  console.log(process.env.GITHUB_WORKSPACE!)
-  fs.readdir(process.env.GITHUB_WORKSPACE!, (_err, files) => {
-    console.log(files)
-  })
 
   actionHelper.uploadArtifacts(args.right?.args.githubWorkspacePath!)
 }
