@@ -14,9 +14,9 @@ export class ActionHelper implements IActionHelper {
     githubWorkspacePath = path.resolve(githubWorkspacePath)
 
     const technology = core.getInput('technology')
-    const componentId = core.getInput('componentId')
+    const componentId = core.getInput('applicationId')
     if (!technology && !componentId) {
-      return { left: new Error('You need to set technology or componentId variable') }
+      return { left: new Error('You need to set technology or applicationId variable') }
     }
 
     const version = core.getInput('version') || 'latest'
