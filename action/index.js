@@ -198,29 +198,10 @@ exports.Cache = Cache;
 /***/ }),
 
 /***/ 6175:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+/***/ (function(__unused_webpack_module, exports) {
 
 "use strict";
 
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -232,17 +213,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.HttpClient = void 0;
-const http = __importStar(__nccwpck_require__(9925));
 class HttpClient {
-    constructor(baseURL) {
+    constructor(_actionHttpClient, baseURL) {
+        this._actionHttpClient = _actionHttpClient;
         this.baseURL = baseURL;
-        this.actionHttpClient = new http.HttpClient();
     }
     get(resource) {
         return __awaiter(this, void 0, void 0, function* () {
             const url = `${this.baseURL}/${resource}`;
             try {
-                const response = yield this.actionHttpClient.getJson(url);
+                const response = yield this._actionHttpClient.getJson(url);
                 return { right: response.result };
             }
             catch (error) {
@@ -394,6 +374,25 @@ exports.Logger = Logger;
 
 "use strict";
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -410,6 +409,7 @@ const insiderci_installer_1 = __nccwpck_require__(5620);
 const cache_1 = __nccwpck_require__(4833);
 const http_client_1 = __nccwpck_require__(6175);
 const zip_1 = __nccwpck_require__(2693);
+const actionHttp = __importStar(__nccwpck_require__(9925));
 const INSIDER_CI_RELEASE_URL = 'https://github.com/insidersec/insiderci/releases';
 const INSIDER_CI_DOWNLOAD_URL = `${INSIDER_CI_RELEASE_URL}/download`;
 const runner = () => __awaiter(void 0, void 0, void 0, function* () {
@@ -417,7 +417,7 @@ const runner = () => __awaiter(void 0, void 0, void 0, function* () {
     const logger = new logger_1.Logger();
     const actionHelper = new action_helper_1.ActionHelper(logger);
     const cache = new cache_1.Cache(INSIDER_CI_DOWNLOAD_URL);
-    const httpClient = new http_client_1.HttpClient(INSIDER_CI_RELEASE_URL);
+    const httpClient = new http_client_1.HttpClient(new actionHttp.HttpClient(), INSIDER_CI_RELEASE_URL);
     const insiderCiInstaller = new insiderci_installer_1.InsiderCiInstaller(httpClient, cache, logger);
     const zipFiles = new zip_1.ZipeFiles(logger);
     const args = actionHelper.getActionArgs();
@@ -495,24 +495,24 @@ class ZipeFiles {
         return __awaiter(this, void 0, void 0, function* () {
             this._logger.info('****** Compress files... ******');
             const zip = new adm_zip_1.default();
-            const files = yield util.promisify(fs.readdir)(dir);
-            files.forEach(fileName => {
-                const filePath = path.join(dir, fileName);
-                const stats = fs.lstatSync(filePath);
-                if (stats.isDirectory()) {
-                    zip.addLocalFolder(filePath);
-                }
-                else {
-                    zip.addLocalFile(filePath);
-                }
-            });
             try {
+                const files = yield util.promisify(fs.readdir)(dir);
+                files.forEach(fileName => {
+                    const filePath = path.join(dir, fileName);
+                    const stats = fs.lstatSync(filePath);
+                    if (stats.isDirectory()) {
+                        zip.addLocalFolder(filePath);
+                    }
+                    else {
+                        zip.addLocalFile(filePath);
+                    }
+                });
                 const destPath = path.join(dir, this.ZIP_DESTINATION);
                 yield util.promisify(zip.writeZip)(destPath);
                 return { right: destPath };
             }
             catch (error) {
-                this._logger.info('****** Something went wrong during the compress process ******');
+                this._logger.error('****** Something went wrong during the compress process ******');
                 return { left: new Error(`${error}`) };
             }
         });

@@ -28,5 +28,5 @@ jobs:
         run: yarn --frozen-lockfile
 
       - name: Unit Tests
-        run: yarn test
+        run: yarn test:cov
 
