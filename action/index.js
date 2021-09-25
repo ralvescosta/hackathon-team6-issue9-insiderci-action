@@ -47,7 +47,7 @@ class ActionHelper {
     getActionArgs() {
         let githubWorkspacePath = process.env.GITHUB_WORKSPACE;
         if (!githubWorkspacePath) {
-            throw new Error('GITHUB_WORKSPACE not defined');
+            return { left: new Error('GITHUB_WORKSPACE not defined') };
         }
         githubWorkspacePath = path.resolve(githubWorkspacePath);
         this._logger.debug(`GITHUB_WORKSPACE = '${githubWorkspacePath}'`);
@@ -75,6 +75,11 @@ class ActionHelper {
                 return files;
             }
             const uploadResponse = yield artifactClient.uploadArtifact(artifactName, files.right, path, { continueOnError: false });
+            this._logger.info('[1] ****');
+            this._logger.info(uploadResponse.artifactItems.join(','));
+            this._logger.info('[2] ****');
+            this._logger.info(uploadResponse.failedItems.join(','));
+            this._logger.info('[3] ****');
             if (uploadResponse.failedItems.length > 0) {
                 return { left: Error(`Error to upload artifacts: ${uploadResponse.failedItems}`) };
             }
@@ -121,7 +126,8 @@ class ActionHelper {
                     target,
                     technology,
                     security,
-                    noFail
+                    noFail,
+                    githubWorkspacePath
                 }
             }
         };
@@ -177,13 +183,11 @@ class Cache {
     getTool(configuredRelease, runtime) {
         return __awaiter(this, void 0, void 0, function* () {
             const url = `${this.baseURL}/${configuredRelease.tag_name}/${runtime}`;
-            this._logger.info(`[Cache :: getTool] - ${url}`);
             try {
                 const result = yield toolCache.downloadTool(url);
                 return { right: result };
             }
             catch (error) {
-                this._logger.error(`ERROR [Cache :: getTool] - ${error}`);
                 return { left: new Error('' + error) };
             }
         });
@@ -448,7 +452,6 @@ const insiderci_installer_1 = __nccwpck_require__(5620);
 const cache_1 = __nccwpck_require__(4833);
 const http_client_1 = __nccwpck_require__(6175);
 const core = __importStar(__nccwpck_require__(2186));
-const exec = __importStar(__nccwpck_require__(1514));
 const path = __importStar(__nccwpck_require__(5622));
 const INSIDER_CI_RELEASE_URL = 'https://github.com/insidersec/insiderci/releases';
 const INSIDER_CI_DOWNLOAD_URL = `${INSIDER_CI_RELEASE_URL}/download`;
@@ -471,9 +474,10 @@ const runner = () => __awaiter(void 0, void 0, void 0, function* () {
     logger.info(`📂 Using ${insiderCiPath} as working directory...`);
     process.chdir(insiderCiPath);
     logger.info(`${insiderCi.right} ${(_b = args.right) === null || _b === void 0 ? void 0 : _b.flags}`);
-    logger.info('🏃 Running Insider CI...');
-    yield exec.exec(`${insiderCi.right}`, (_c = args.right) === null || _c === void 0 ? void 0 : _c.flags);
-    logger.info(' Finished Insider');
+    // logger.info('🏃 Running Insider CI...')
+    // await exec.exec(`${insiderCi.right}`, args.right?.flags)
+    // logger.info(' Finished Insider')
+    actionHelper.uploadArtifacts((_c = args.right) === null || _c === void 0 ? void 0 : _c.args.githubWorkspacePath);
 });
 runner();
 

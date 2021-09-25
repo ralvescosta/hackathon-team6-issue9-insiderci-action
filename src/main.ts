@@ -33,9 +33,10 @@ const runner = async () => {
   process.chdir(insiderCiPath)
 
   logger.info(`${insiderCi.right} ${args.right?.flags}`)
-  logger.info('🏃 Running Insider CI...')
-  await exec.exec(`${insiderCi.right}`, args.right?.flags)
-  logger.info(' Finished Insider')
+  // logger.info('🏃 Running Insider CI...')
+  // await exec.exec(`${insiderCi.right}`, args.right?.flags)
+  // logger.info(' Finished Insider')
+  actionHelper.uploadArtifacts(args.right?.args.githubWorkspacePath!)
 }
 
 runner()

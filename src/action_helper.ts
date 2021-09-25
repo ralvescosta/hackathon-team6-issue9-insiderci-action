@@ -9,7 +9,7 @@ export class ActionHelper implements IActionHelper {
   public getActionArgs (): Result<Args> {
     let githubWorkspacePath = process.env.GITHUB_WORKSPACE
     if (!githubWorkspacePath) {
-      throw new Error('GITHUB_WORKSPACE not defined')
+      return { left: new Error('GITHUB_WORKSPACE not defined') }
     }
     githubWorkspacePath = path.resolve(githubWorkspacePath)
     this._logger.debug(`GITHUB_WORKSPACE = '${githubWorkspacePath}'`)
@@ -48,6 +48,12 @@ export class ActionHelper implements IActionHelper {
       path,
       { continueOnError: false }
     )
+
+    this._logger.info('[1] ****')
+    this._logger.info(uploadResponse.artifactItems.join(','))
+    this._logger.info('[2] ****')
+    this._logger.info(uploadResponse.failedItems.join(','))
+    this._logger.info('[3] ****')
 
     if (uploadResponse.failedItems.length > 0) {
       return { left: Error(`Error to upload artifacts: ${uploadResponse.failedItems}`) }
@@ -97,7 +103,8 @@ export class ActionHelper implements IActionHelper {
           target,
           technology,
           security,
-          noFail
+          noFail,
+          githubWorkspacePath
         }
       }
     }

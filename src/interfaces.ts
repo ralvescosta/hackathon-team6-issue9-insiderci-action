@@ -31,6 +31,7 @@ export interface Args {
       technology: string
       security: string
       noFail: string
+      githubWorkspacePath: string
   }
 }
 

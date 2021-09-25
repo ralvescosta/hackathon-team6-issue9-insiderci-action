@@ -21,7 +21,7 @@ jobs:
     steps:
       - name: Action step
         id: actionId
-        uses: ralvescosta/insiderci-action@v0.0.23
+        uses: ralvescosta/insiderci-action@v0.0.24
         with:
           email: 'rafael.costa@inmetrics.com.br'
           password: 'Trocar@123$2021'
