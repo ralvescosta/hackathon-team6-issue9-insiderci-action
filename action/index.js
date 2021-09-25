@@ -497,8 +497,13 @@ const runner = () => __awaiter(void 0, void 0, void 0, function* () {
         });
     });
     const destPath = path.join((_c = args.right) === null || _c === void 0 ? void 0 : _c.args.githubWorkspacePath, 'project.zip');
-    zip.writeZip(destPath);
+    logger.info('[1]**');
     logger.info('**');
+    logger.info(zip.getZipComment());
+    logger.info('**');
+    logger.info('**');
+    zip.writeZip(destPath);
+    logger.info('[2]**');
     logger.info('**');
     logger.info(zip.getZipComment());
     logger.info('**');

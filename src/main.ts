@@ -56,9 +56,15 @@ const runner = async () => {
   })
 
   const destPath = path.join(args.right?.args.githubWorkspacePath!, 'project.zip')
+  logger.info('[1]**')
+  logger.info('**')
+  logger.info(zip.getZipComment())
+  logger.info('**')
+  logger.info('**')
+
   zip.writeZip(destPath)
 
-  logger.info('**')
+  logger.info('[2]**')
   logger.info('**')
   logger.info(zip.getZipComment())
   logger.info('**')
