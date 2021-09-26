@@ -76,8 +76,8 @@ class ActionHelper {
                 return { right: result };
             }
             catch (error) {
-                this._logger.error('****** Something went wrong during the action execute ******');
-                return { left: new Error(`${error}`) };
+                this._logger.error('****** Your Application have some security problems ******');
+                return { left: new Error('Your Application have some security problems') };
             }
         });
     }

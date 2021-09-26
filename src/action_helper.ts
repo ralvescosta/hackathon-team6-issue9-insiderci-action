@@ -42,8 +42,8 @@ export class ActionHelper implements IActionHelper {
       const result = await exec.exec(command, args)
       return { right: result }
     } catch (error) {
-      this._logger.error('****** Something went wrong during the action execute ******')
-      return { left: new Error(`${error}`) }
+      this._logger.error('****** Your Application have some security problems ******')
+      return { left: new Error('Your Application have some security problems') }
     }
   }
 
